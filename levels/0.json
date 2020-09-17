@@ -1,0 +1,77 @@
+{
+    "player": {
+        "pos": [,],
+        "size": [40, 60],
+        "color": [255, 0, 0]
+    },
+    "map": {
+        "size": [,],
+        "target": [
+            {
+                "name": "t0",
+                "pos": [,],
+                "size": [100, 250],
+                "color": [240, 230, 140]
+            }
+        ],
+        "coin": [
+            {
+                "name": "c0",
+                "pos": [,],
+                "size": [10, 10],
+                "color": [255, 215, 0]
+            }
+        ],
+        "switch": [
+            {
+                "name": "s0",
+                "pos": [,],
+                "size": [30, 30],
+                "color": [102, 255, 178],
+                "command": {
+                    "close": [
+                        ["state", "open"],
+                        ["color", [62, 195, 128]]
+                    ],
+                    "open": [
+                        ["state", "open"]
+                    ]
+                }
+            }
+        ],
+        "monster": [
+            {
+                "name": "m0",
+                "track": [
+                    {
+                        "pos": [,],
+                        "speed": [,]
+                    }
+                ],
+                "size": [40, 60],
+                "color": [50, 205, 50]
+            }
+        ],
+        "elevator" : [
+            {
+                "name": "e0",
+                "track": [
+                    {
+                        "pos": [,],
+                        "speed": [,]
+                    }
+                ],
+                "size": [160, 40],
+                "color": [0, 0, 128]
+            }
+        ],
+        "obstacle": [
+            {
+                "name": "o0",
+                "pos": [, ],
+                "size": [3000, 70],
+                "color": [0, 0, 128]
+            }
+        ]
+    }
+}
