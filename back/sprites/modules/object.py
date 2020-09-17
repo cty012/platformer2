@@ -67,6 +67,8 @@ class Switch(Static):
         self.speed = [0, 0]
 
     def auto(self, map, players):
+        if 'auto' not in self.command.keys():
+            return
         for command in self.command['auto']:
             self.execute(map, players, command)
 
