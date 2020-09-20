@@ -20,5 +20,5 @@ def is_rect(rect):
     return rect[0][0] < rect[1][0] and rect[0][1] < rect[1][1]
 
 
-def is_ip(ip):
-    return ip.startswith('172') or ip.startswith('192')
+def is_private_ip(ip):
+    return ip.startswith('10.') or ip.startswith('172.') or ip.startswith('192.')

@@ -18,7 +18,7 @@ class Scene:
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.ip = [
             ip for ip in socket.gethostbyname_ex(socket.gethostname())[2]
-            if True  # utils.is_ip(ip)
+            if utils.is_private_ip(ip)
         ][0]
         self.server.bind((self.ip, 5050))
         self.server.settimeout(1.0)
