@@ -26,13 +26,10 @@ class Static:
         return rect[0][0] < pos[0] < rect[1][0] and rect[0][1] < pos[1] < rect[1][1]
 
     def get_status(self):
-        return {'name': self.name, 'pos': self.pos, 'size': self.size, 'color': self.color}
+        return {'name': self.name}
 
     def set_status(self, status):
         self.name = status['name']
-        self.pos = status['pos']
-        self.size = status['size']
-        self.color = status['color']
 
     def show(self, ui, *, pan=(0, 0)):
         ui.show_div(self.pos, self.size, color=self.color, pan=pan)
@@ -46,6 +43,13 @@ class Movable(Static):
         self.track = info['track']
         self.update_speed = True
         self.speed = self.track[0]['speed']
+
+    def get_status(self):
+        return {'name': self.name, 'pos': self.pos}
+
+    def set_status(self, status):
+        self.name = status['name']
+        self.pos = status['pos']
 
     def move(self):
         if self.update_speed:
@@ -99,3 +103,10 @@ class Switch(Static):
         elif command[0] == 'for':
             for self.props['item'] in command[1]:
                 self.execute(map, players, command[2])
+
+    def get_status(self):
+        return {'name': self.name, 'color': self.color}
+
+    def set_status(self, status):
+        self.name = status['name']
+        self.color = status['color']

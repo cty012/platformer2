@@ -18,3 +18,7 @@ def direction(rect1, rect2, direction):
 
 def is_rect(rect):
     return rect[0][0] < rect[1][0] and rect[0][1] < rect[1][1]
+
+
+def is_ip(ip):
+    return ip.startswith('172') or ip.startswith('192')

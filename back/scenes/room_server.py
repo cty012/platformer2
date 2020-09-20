@@ -5,6 +5,7 @@ import time
 
 import back.sprites.component as c
 import utils.fonts as f
+import utils.functions as utils
 
 
 class Scene:
@@ -15,8 +16,11 @@ class Scene:
 
         # server and client
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server.bind((socket.gethostname(), 5050))
-        self.ip = socket.gethostbyname(socket.gethostname())
+        self.ip = [
+            ip for ip in socket.gethostbyname_ex(socket.gethostname())[2]
+            if True  # utils.is_ip(ip)
+        ][0]
+        self.server.bind((self.ip, 5050))
         self.server.settimeout(1.0)
         self.server.listen()
         self.clients = []  # {ip, port, client}

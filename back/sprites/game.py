@@ -90,8 +90,8 @@ class Game:
                 msg_b = bytes(msg, encoding='utf-8')
                 client['socket'].send(bytes(f'{len(msg_b):10}', encoding='utf-8'))
                 client['socket'].send(msg_b)
-        except OSError:
-            pass
+        except OSError as e:
+            print(e)
 
     def receive(self, i):
         def func():
@@ -108,7 +108,6 @@ class Game:
                 for events_str in events_strs:
                     events = json.loads(events_str)
                     self.players[i + 1].process_pressed(events['key-pressed'], events['key-down'])
-
             print(f'SERVER END receiving FROM C{i}...')
         return func
 
