@@ -30,7 +30,7 @@ class Game:
         self.connected = {'connected': True}
         self.prepare()
         # time
-        self.time = '00:00'
+        self.time = '00:00:00'
 
 ########################################################################################################################
 # PREPARATION #
