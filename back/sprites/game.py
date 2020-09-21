@@ -87,7 +87,7 @@ class Game:
         # send data to clients
         if self.mode['mode'] == 'mult' and self.connected['connected']:
             self.send(json.dumps(self.get_status()))
-            self.send(self.timer.get_str_time())
+            self.send('time' + self.timer.get_str_time())
         if self.win is not None:
             self.connected['connected'] = False
 
