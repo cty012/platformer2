@@ -17,4 +17,4 @@ def cheri(font_size):
 
 
 def digital_7(font_size):
-    return 'src', 'digital-7.ttf', font_size
+    return 'src', 'digital-7-mono.ttf', font_size
