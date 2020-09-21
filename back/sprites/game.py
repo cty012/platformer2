@@ -115,7 +115,8 @@ class Game:
 # OPERATIONS #
 ########################################################################################################################
     def get_target_pan(self):
-        pos, screen_size, map_size = self.my_player.pos, self.args.size, self.map.size
+        pos, size, screen_size, map_size = self.my_player.pos, self.my_player.size, self.args.size, self.map.size
+        pos = (pos[0] + size[0] // 2, pos[1] + size[1] // 2)
         pan = pos[0] - screen_size[0] // 2, pos[1] - screen_size[1] // 2
         # check boundaries
         pan = max(pan[0], 0), max(pan[1], 0)
