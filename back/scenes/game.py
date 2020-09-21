@@ -63,7 +63,6 @@ class Scene:
         self.game.show(ui)
         # show timer
         current_time = self.timer.get_str_time().split(':')
-        print(current_time)
         ui.show_text((self.args.size[0] // 2 - 10, 120), current_time[0], f.cambria(35), align=(2, 1))
         ui.show_text((self.args.size[0] // 2, 120), ':', f.cambria(35), align=(1, 1))
         ui.show_text((self.args.size[0] // 2 + 10, 120), current_time[1], f.cambria(35), align=(0, 1))
