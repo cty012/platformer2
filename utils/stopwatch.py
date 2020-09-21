@@ -44,8 +44,8 @@ class Stopwatch:
         millis = self.get_time()
         minutes = int(millis) // 60
         seconds = int(millis) - minutes * 60
-        decimals = millis - int(millis)
-        return f'{minutes:02}:{seconds:02}:{decimals:.2f}'
+        decimals = int((millis - int(millis)) * 100)
+        return f'{minutes:02}:{seconds:02}:{decimals:02}'
 
     def clear(self):
         self.start_time = None

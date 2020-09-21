@@ -138,7 +138,7 @@ class Game:
         ui.show_text((110, 90), current_time[0], f.digital_7(50), align=(2, 2))
         ui.show_text((120, 90), ':', f.digital_7(50), align=(1, 2))
         ui.show_text((130, 90), current_time[1], f.digital_7(50), align=(0, 2))
-        ui.show_text((185, 90), current_time[2].split('.')[1], f.digital_7(30), align=(0, 2))
+        ui.show_text((185, 90), current_time[2], f.digital_7(30), align=(0, 2))
         # show pause message
         if self.paused:
             ui.show_div((self.args.size[0] // 2, self.args.size[1] // 2), (400, 100), color=(192, 192, 192), align=(1, 1))
