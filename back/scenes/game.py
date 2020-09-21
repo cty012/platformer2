@@ -27,7 +27,7 @@ class Scene:
         # game ended
         if self.game.win is not None:
             # stop timer if game ends
-            if self.game.timer.is_running():
+            if not self.is_client() and self.game.timer.is_running():
                 self.game.timer.stop()
             return self.execute(self.score_board.process_events(events))
         # game paused
