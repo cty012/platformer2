@@ -3,7 +3,6 @@ import os
 
 import back.sprites.component as c
 import back.sprites.menu.game_menu as gm
-import back.sprites.menu.saver as s
 import back.sprites.menu.score_board as sb
 
 
@@ -22,7 +21,6 @@ class Scene:
             self.game = g.Game(self.args, self.mode, json.load(file))
         # others
         self.game_menu = gm.GameMenu((self.args.size[0] // 2, self.args.size[1] // 2), align=(1, 1))
-        self.saver = s.Saver(self.args, msg=self.game.name)
         self.score_board = sb.ScoreBoard((self.args.size[0] // 2, self.args.size[1] // 2), align=(1, 1))
 
     def process_events(self, events):
