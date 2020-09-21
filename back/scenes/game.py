@@ -13,7 +13,7 @@ class Scene:
         # mode and game
         self.mode = mode
         self.game = None
-        if mode['mode'] == 'mult' and mode['connect']['identity'] == 'client':
+        if self.is_client():
             import back.sprites.game_client as g
         else:
             import back.sprites.game as g
@@ -34,7 +34,7 @@ class Scene:
         elif self.game_menu.active:
             return self.execute(self.game_menu.process_events(events))
         # pause game
-        elif 'escape' in events['key-down'] and not (self.mode['mode'] == 'mult' and self.mode['connect']['identity'] == 'client'):
+        elif 'escape' in events['key-down'] and not self.is_client():
             return self.execute('continue')
         # play game
         return self.execute(self.game.process_events(events))

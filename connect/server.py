@@ -2,6 +2,8 @@ import socket
 
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ips = socket.gethostbyname_ex(socket.gethostname())
+print(ips)
 s.bind((socket.gethostname(), 5050))
 s.listen()
 

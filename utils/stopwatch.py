@@ -2,11 +2,11 @@ import time
 
 
 class Stopwatch:
-    def __init__(self):
+    def __init__(self, start_time=0):
         self.start_time = None
         self.end_time = None
         self.speed = 1
-        self.interval = 0
+        self.interval = start_time
 
     def start(self, speed=1):
         if self.start_time is None:

@@ -80,6 +80,20 @@ class Switch(Static):
         for command in self.command[self.state]:
             self.execute(map, players, command)
 
+    def compare(self, map, players, command):
+        if command[0] == 'color':
+            return self.color == command[1]
+        elif command[0] == 'exist':
+            return len(map.find_objects(command[1])) > 0
+        elif command[0] == 'player':
+            player = players[command[1]]
+            return eval(f'player.{command[2]} == {command[3]}')
+        elif command[0] == 'object':
+            for obj in map.find_objects(command[1]):
+                if eval(f'obj.{command[2]} == {command[3]}'):
+                    return True
+            return False
+
     def execute(self, map, players, command):
         if command[0] == 'state':
             self.state = command[1]
@@ -98,11 +112,9 @@ class Switch(Static):
             for obj in map.find_objects(command[1]):
                 exec(f'obj.{command[2]} = {command[3]}')
         elif command[0] == 'if':
-            if eval(command[1]):
-                self.execute(map, players, command[2])
-        elif command[0] == 'for':
-            for self.props['item'] in command[1]:
-                self.execute(map, players, command[2])
+            if self.compare(map, players, command[1]):
+                for com in command[2]:
+                    self.execute(map, players, com)
 
     def get_status(self):
         return {'name': self.name, 'color': self.color}
