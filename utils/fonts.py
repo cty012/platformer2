@@ -14,3 +14,7 @@ def cambria(font_size):
 
 def cheri(font_size):
     return 'src', 'cheri.ttf', font_size
+
+
+def digital_7(font_size):
+    return 'src', 'digital-7.ttf', font_size

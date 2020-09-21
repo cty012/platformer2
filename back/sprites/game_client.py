@@ -29,6 +29,8 @@ class Game:
         self.thread_recv = None
         self.connected = {'connected': True}
         self.prepare()
+        # time
+        self.time = '00:00'
 
 ########################################################################################################################
 # PREPARATION #
@@ -81,6 +83,8 @@ class Game:
                 elif msg == 'close':
                     continue
                 # update status
+                elif msg.startswith('time'):
+                    self.time = msg[4:]
                 else:
                     status = json.loads(msg)
                     self.set_status(status)
@@ -129,6 +133,13 @@ class Game:
         self.map.show(ui, pan=self.pan)
         for player in self.players:
             player.show(ui, pan=self.pan)
+        # show time
+        current_time = self.time.split(':')
+        ui.show_text((self.args.size[0] // 2 - 10, 140), current_time[0], f.digital_7(50), align=(2, 2))
+        ui.show_text((self.args.size[0] // 2, 120), ':', f.digital_7(50), align=(1, 1))
+        ui.show_text((self.args.size[0] // 2 + 10, 140), current_time[1], f.digital_7(50), align=(0, 2))
+        ui.show_text((self.args.size[0] // 2 + 65, 140), current_time[2].split('.')[1], f.digital_7(30), align=(0, 2))
+        # show pause message
         if self.paused:
             ui.show_div((self.args.size[0] // 2, self.args.size[1] // 2), (400, 100), color=(192, 192, 192), align=(1, 1))
             ui.show_div(

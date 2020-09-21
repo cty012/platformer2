@@ -5,6 +5,8 @@ from threading import Thread
 import back.sprites.modules.map as m
 import back.sprites.modules.player as p
 from utils.parser import Parser
+import utils.fonts as f
+import utils.stopwatch as sw
 
 
 class Game:
@@ -27,6 +29,9 @@ class Game:
         self.thread_recv = []
         self.connected = {'connected': True}
         self.prepare()
+        # timer
+        self.timer = sw.Stopwatch()
+        self.timer.start()
 
 ########################################################################################################################
 # PREPARATION #
@@ -52,6 +57,7 @@ class Game:
 # EVENTS #
 ########################################################################################################################
     def process_events(self, events):
+        # player collect coins and switches
         for player in self.players:
             # collect coins
             for coin in self.map.objects['coin']:
@@ -81,6 +87,7 @@ class Game:
         # send data to clients
         if self.mode['mode'] == 'mult' and self.connected['connected']:
             self.send(json.dumps(self.get_status()))
+            self.send(self.timer.get_str_time())
         if self.win is not None:
             self.connected['connected'] = False
 
@@ -173,3 +180,9 @@ class Game:
         self.map.show(ui, pan=self.pan)
         for player in self.players:
             player.show(ui, pan=self.pan)
+        # show timer
+        current_time = self.timer.get_str_time().split(':')
+        ui.show_text((self.args.size[0] // 2 - 10, 140), current_time[0], f.digital_7(50), align=(2, 2))
+        ui.show_text((self.args.size[0] // 2, 120), ':', f.digital_7(50), align=(1, 1))
+        ui.show_text((self.args.size[0] // 2 + 10, 140), current_time[1], f.digital_7(50), align=(0, 2))
+        ui.show_text((self.args.size[0] // 2 + 65, 140), current_time[2].split('.')[1], f.digital_7(30), align=(0, 2))

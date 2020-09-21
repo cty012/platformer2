@@ -41,10 +41,11 @@ class Stopwatch:
             return self.speed * (time.time() - self.start_time) + self.interval
 
     def get_str_time(self):
-        millis = int(self.get_time())
-        minutes = millis // 60
-        seconds = millis - minutes * 60
-        return f'{minutes:02}:{seconds:02}'
+        millis = self.get_time()
+        minutes = int(millis) // 60
+        seconds = int(millis) - minutes * 60
+        decimals = millis - int(millis)
+        return f'{minutes:02}:{seconds:02}:{decimals:.2f}'
 
     def clear(self):
         self.start_time = None
