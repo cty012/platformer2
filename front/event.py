@@ -1,11 +1,15 @@
 import pygame
+from pygame.locals import *
 
 
 class Event:
     def __init__(self, args):
         self.args = args
-        self.l_ctrl = False
-        self.r_ctrl = False
+        self.key_list = \
+            [k for k in range(K_0, K_9 + 1)] + [k for k in range(K_a, K_z + 1)] + [k for k in range(K_F1, K_F12 + 1)] + \
+            [K_SPACE, K_TAB, K_ESCAPE, K_BACKSPACE, K_RETURN, K_UP, K_DOWN, K_LEFT, K_RIGHT, K_PAGEUP, K_PAGEDOWN, K_DELETE] + \
+            [K_MINUS, K_EQUALS, K_LEFTBRACKET, K_RIGHTBRACKET, K_BACKSLASH, K_COLON, K_QUOTE, K_COMMA, K_PERIOD, K_BACKSLASH] + \
+            [k for k in range(K_KP0, K_KP9 + 1)] + [K_KP_PLUS, K_KP_MINUS]
 
     def detect(self):
         pos = pygame.mouse.get_pos()
@@ -38,5 +42,5 @@ class Event:
                     all_events['mouse-left'] = 'up'
         # add pressed keys
         pressed = pygame.key.get_pressed()
-        all_events['key-pressed'] = [pygame.key.name(key) for key in range(len(pressed)) if pressed[key]]
+        all_events['key-pressed'] = [pygame.key.name(key) for key in self.key_list if pressed[key]]
         return all_events
