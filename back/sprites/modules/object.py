@@ -101,10 +101,7 @@ class Switch(Static):
             self.color = command[1]
         elif command[0] == 'remove':
             for obj in map.find_objects(command[1]):
-                if obj.type == 'target':
-                    map.target = None
-                else:
-                    map.objects[obj.type].remove(obj)
+                map.objects[obj.type].remove(obj)
         elif command[0] == 'player':
             player = players[command[1]]
             exec(f'player.{command[2]} = {command[3]}')

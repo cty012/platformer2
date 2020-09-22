@@ -139,21 +139,25 @@ class Game:
 
     def check_win(self):
         for player in self.players:
-            if self.win is None:
-                # reach target -> WIN
-                if player.collide_with(self.map.objects['target']):
+            if self.win is not None:
+                return
+            # reach target -> WIN
+            for target in self.map.objects['target']:
+                if player.collide_with(target):
                     self.win = True
                     self.close_client_sockets()
-                # fall -> LOSE
-                elif player.pos[1] > self.map.size[1] + 300:
+                    return
+            # fall -> LOSE
+            if player.pos[1] > self.map.size[1] + 300:
+                self.win = False
+                self.close_client_sockets()
+                return
+            # touch monster -> LOSE
+            for monster in self.map.objects['monster']:
+                if player.collide_with(monster):
                     self.win = False
                     self.close_client_sockets()
-                # touch monster -> LOSE
-                else:
-                    for monster in self.map.objects['monster']:
-                        if player.collide_with(monster):
-                            self.win = False
-                            self.close_client_sockets()
+                    return
 
     def close_client_sockets(self):
         if self.mode['mode'] == 'sing':

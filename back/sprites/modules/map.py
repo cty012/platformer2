@@ -11,7 +11,7 @@ class Map:
         self.pos = utils.top_left(pos, self.size, align=align)
         # objects
         self.objects = {
-            'target': None,
+            'target': [],
             'obstacle': [],
             'elevator': [],
             'switch': [],
@@ -33,10 +33,7 @@ class Map:
     def get_objects(self):
         objs = []
         for obj_name in self.objects.keys():
-            if obj_name == 'target':
-                objs += [self.objects[obj_name]]
-            else:
-                objs += self.objects[obj_name]
+            objs += self.objects[obj_name]
         return objs
 
     def find_objects(self, name):
@@ -49,11 +46,11 @@ class Map:
     def get_status(self):
         return {
             obj_type: [obj.get_status() for obj in self.objects[obj_type]]
-            for obj_type in ['coin', 'obstacle', 'elevator', 'monster', 'switch']
+            for obj_type in ['target', 'coin', 'obstacle', 'elevator', 'monster', 'switch']
         }
 
     def set_status(self, status):
-        for obj_type in ['coin', 'obstacle', 'elevator', 'monster', 'switch']:
+        for obj_type in ['target', 'coin', 'obstacle', 'elevator', 'monster', 'switch']:
             names = [obj['name'] for obj in status[obj_type]]
             i = 0
             while i < len(self.objects[obj_type]):
@@ -80,9 +77,7 @@ class MapLoader:
     def load(cls, map, map_info):
         for obj_name in map.objects:
             for obj_info in map_info[obj_name]:
-                if obj_name == 'target':
-                    map.objects[obj_name] = o.Static(obj_info, type=obj_name)
-                elif obj_name in ['coin', 'obstacle']:
+                if obj_name in ['target', 'coin', 'obstacle']:
                     map.objects[obj_name].append(o.Static(obj_info, type=obj_name))
                 elif obj_name in ['elevator', 'monster']:
                     map.objects[obj_name].append(o.Movable(obj_info, type=obj_name))
