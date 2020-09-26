@@ -47,7 +47,6 @@ class Player:
             self.speed[0] = 0
         else:
             self.speed[0] = self.reference_frame.speed[0]
-        print(self.speed)
 
     def check_obstacles(self, map, magnitude, direction):
         self.ground = False
@@ -59,8 +58,6 @@ class Player:
             obs_rect = obs.get_rect()
             obs_orig_rect = obs.get_orig_rect()
             if utils.overlap(self.get_moving_rect(pos), obs_rect):
-                if direction == 0:
-                    print("collision!!!", sep='')
                 rel_pos = utils.direction(self.get_rect(), obs_orig_rect, direction)
                 # return to the edge
                 if rel_pos == 'low' and magnitude >= obs.speed[direction]:
