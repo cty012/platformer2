@@ -80,35 +80,35 @@
                 "name": "d-move",
                 "pos": [50, 400],
                 "text": ["PRESS A AND D TO MOVE", "BACKWARD AND FORWARD"],
-                "font": ["cheri", 20],
+                "font": ["uasquared", 20],
                 "color": [128, 128, 128]
             },
             {
                 "name": "d-jump",
                 "pos": [500, 400],
                 "text": ["PRESS W TO JUMP"],
-                "font": ["cheri", 20],
+                "font": ["uasquared", 20],
                 "color": [128, 128, 128]
             },
             {
                 "name": "d-monster",
                 "pos": [1200, 400],
                 "text": ["BEWARE OF THE MONSTER ON PATROL"],
-                "font": ["cheri", 20],
+                "font": ["uasquared", 20],
                 "color": [128, 128, 128]
             },
             {
                 "name": "d-coin",
                 "pos": [1870, 400],
                 "text": ["WALK TO COLLECT THE COINS"],
-                "font": ["cheri", 20],
+                "font": ["uasquared", 20],
                 "color": [128, 128, 128]
             },
             {
                 "name": "d-target",
                 "pos": [2600, 270],
                 "text": ["REACH THE TARGET", "TO WIN THE GAME"],
-                "font": ["cheri", 20],
+                "font": ["uasquared", 20],
                 "color": [128, 128, 128]
             }
         ]

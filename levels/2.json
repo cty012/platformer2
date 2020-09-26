@@ -119,21 +119,21 @@
                 "name": "d-double-jump",
                 "pos": [400, 520],
                 "text": ["PRESS W TWICE TO", "DO A DOUBLE JUMP"],
-                "font": ["cheri", 20],
+                "font": ["uasquared", 20],
                 "color": [128, 128, 128]
             },
             {
                 "name": "d-elevator",
                 "pos": [1550, 600],
                 "text": ["ElEVATORS CAN LIFT", "PLAYER TO HIGH PLACES"],
-                "font": ["cheri", 20],
+                "font": ["uasquared", 20],
                 "color": [128, 128, 128]
             },
             {
                 "name": "d-elevator",
                 "pos": [1900, 50],
                 "text": ["YOU CANNOT JUMP", "HIGHER THAN THE MAP"],
-                "font": ["cheri", 20],
+                "font": ["uasquared", 20],
                 "color": [128, 128, 128]
             }
         ]

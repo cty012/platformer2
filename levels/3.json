@@ -266,14 +266,14 @@
                 "name": "d-lava",
                 "pos": [550, 430],
                 "text": ["JUMP OVER THE LAVA"],
-                "font": ["cheri", 20],
+                "font": ["uasquared", 20],
                 "color": [128, 128, 128]
             },
             {
                 "name": "d-switch",
                 "pos": [1430, 180],
                 "text": ["BUTTONS CAN ALTER THE", "MAP IN A CERTAIN WAY"],
-                "font": ["cheri", 20],
+                "font": ["uasquared", 20],
                 "color": [128, 128, 128]
             }
         ]
