@@ -4,20 +4,30 @@ import utils.functions as utils
 
 class Player:
     def __init__(self, player_info, id=None):
+        # basic info
         self.id = id
         self.pos = player_info['pos']
         self.size = player_info['size']
         self.color = player_info['color']
+        # movement
         self.speed = [0, 0]
         self.gravity = [0, 2]
+        # status
+        self.reference_frame = None
         self.ground = False
         self.jump_times = 0
 
     def get_rect(self):
         return [[self.pos[0], self.pos[1]], [self.pos[0] + self.size[0], self.pos[1] + self.size[1]]]
 
+    def get_moving_rect(self, target_pos):
+        return [
+            [min(self.pos[0], target_pos[0]), min(self.pos[1], target_pos[1])],
+            [max(self.pos[0], target_pos[0]) + self.size[0], max(self.pos[1], target_pos[1]) + self.size[1]]
+        ]
+
     def process_pressed(self, pressed, down):
-        self.speed[0] = 0
+        self.sync()
         if 'a' in pressed or 'left' in pressed:
             self.speed[0] -= 8
         if 'd' in pressed or 'right' in pressed:
@@ -25,36 +35,43 @@ class Player:
         if 'w' in down or 'space' in down or 'up' in down:
             if self.ground:
                 self.speed[1] = -30
+                self.reference_frame = None
                 self.ground = False
                 self.jump_times = 1
             elif self.jump_times > 0:
                 self.speed[1] = -30
                 self.jump_times -= 1
 
+    def sync(self):
+        if not self.ground:
+            self.speed[0] = 0
+        else:
+            self.speed[0] = self.reference_frame.speed[0]
+        print(self.speed)
+
     def check_obstacles(self, map, magnitude, direction):
         self.ground = False
         # calculate expected position
         pos = self.pos[:]
         pos[direction] += magnitude
-        player_rect = [
-            [min(self.pos[0], pos[0]), min(self.pos[1], pos[1])],
-            [max(self.pos[0], pos[0]) + self.size[0], max(self.pos[1], pos[1]) + self.size[1]]
-        ]
         # revise expected position
         for obs in map.objects['obstacle'] + map.objects['elevator']:
             obs_rect = obs.get_rect()
             obs_orig_rect = obs.get_orig_rect()
-            if utils.overlap(player_rect, obs_rect):
+            if utils.overlap(self.get_moving_rect(pos), obs_rect):
+                if direction == 0:
+                    print("collision!!!", sep='')
                 rel_pos = utils.direction(self.get_rect(), obs_orig_rect, direction)
                 # return to the edge
-                if rel_pos == 'low' and magnitude > 0:
+                if rel_pos == 'low' and magnitude >= obs.speed[direction]:
                     pos[direction] = obs_rect[0][direction] - self.size[direction]
                     self.speed[direction] = 0
                     # detect if player is on the ground
                     if direction == 1:
+                        self.reference_frame = obs
                         self.ground = True
                         self.jump_times = 1
-                elif rel_pos == 'high' and magnitude < 0:
+                elif rel_pos == 'high' and magnitude <= obs.speed[direction]:
                     pos[direction] = obs_rect[1][direction]
                     self.speed[direction] = 0
         return pos
@@ -64,11 +81,9 @@ class Player:
 
     def move(self, map):
         # move horizontally
-        if self.speed[0] != 0:
-            self.pos = self.check_obstacles(map, self.speed[0], 0)
+        self.pos = self.check_obstacles(map, self.speed[0], 0)
         # move vertically
-        if self.speed[1] != 0:
-            self.pos = self.check_obstacles(map, self.speed[1], 1)
+        self.pos = self.check_obstacles(map, self.speed[1], 1)
         # update speed
         self.speed[1] += self.gravity[1]
 

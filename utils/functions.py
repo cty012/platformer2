@@ -8,10 +8,10 @@ def overlap(rect1, rect2):
     return is_rect([rect1[0], rect2[1]]) and is_rect([rect2[0], rect1[1]])
 
 
-def direction(rect1, rect2, direction):
-    if max(rect1[0][direction], rect1[1][direction]) <= min(rect2[0][direction], rect2[1][direction]):
+def direction(rect1, rect2, direct):
+    if max(rect1[0][direct], rect1[1][direct]) <= min(rect2[0][direct], rect2[1][direct]):
         return 'low'
-    elif min(rect1[0][direction], rect1[1][direction]) >= max(rect2[0][direction], rect2[1][direction]):
+    elif min(rect1[0][direct], rect1[1][direct]) >= max(rect2[0][direct], rect2[1][direct]):
         return 'high'
     return None
 

@@ -182,7 +182,7 @@ class Game:
 
     def show(self, ui):
         self.map.show(ui, pan=self.pan)
-        for player in self.players:
+        for player in reversed(self.players):
             player.show(ui, pan=self.pan)
         # show timer
         current_time = self.timer.get_str_time().split(':')
