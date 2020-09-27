@@ -48,13 +48,17 @@ class Movable(Static):
         self.track = info['track']
         self.update_speed = True
         self.speed = self.track[0]['speed']
+        # update
+        self.update = []
+        if 'update' in info.keys():
+            self.update = info['update']
 
     def get_status(self):
-        return {'name': self.name, 'pos': self.pos}
+        return {param: eval(f'self.{param}') for param in self.update}
 
     def set_status(self, status):
-        self.name = status['name']
-        self.pos = status['pos']
+        for param in self.update:
+            exec(f'self.{param} = status[\'{param}\']')
 
     def move(self):
         if self.update_speed:
@@ -75,6 +79,10 @@ class Switch(Static):
         self.state = 'close'
         self.props = {}
         self.speed = [0, 0]
+        # update
+        self.update = []
+        if 'update' in info.keys():
+            self.update = info['update']
 
     def auto(self, map, players):
         if 'auto' not in self.command.keys():
@@ -120,8 +128,8 @@ class Switch(Static):
                     self.execute(map, players, com)
 
     def get_status(self):
-        return {'name': self.name, 'color': self.color}
+        return {param: eval(f'self.{param}') for param in self.update}
 
     def set_status(self, status):
-        self.name = status['name']
-        self.color = status['color']
+        for param in self.update:
+            exec(f'self.{param} = status[\'{param}\']')
