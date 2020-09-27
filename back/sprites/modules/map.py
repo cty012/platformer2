@@ -51,7 +51,7 @@ class Map:
 
     def set_status(self, status):
         for obj_type in ['target', 'coin', 'obstacle', 'elevator', 'monster', 'switch']:
-            names = [obj['name'] for obj in status[obj_type]]
+            names = [obj['name'] for obj in status[obj_type] if 'name' in obj.keys()]
             i = 0
             while i < len(self.objects[obj_type]):
                 obj = self.objects[obj_type][i]

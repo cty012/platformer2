@@ -54,7 +54,7 @@ class Movable(Static):
             self.update = info['update']
 
     def get_status(self):
-        return {param: eval(f'self.{param}') for param in self.update}
+        return {param: eval(f'self.{param}', {'self': self}) for param in self.update}
 
     def set_status(self, status):
         for param in self.update:

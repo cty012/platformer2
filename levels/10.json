@@ -21,19 +21,22 @@
                 "name": "c0",
                 "pos": [0, 0],
                 "size": [10, 10],
-                "color": [255, 215, 0]
+                "color": [255, 215, 0],
+                "update": ["name"]
             },
             {
                 "name": "c1",
                 "pos": [0, 0],
                 "size": [10, 10],
-                "color": [255, 215, 0]
+                "color": [255, 215, 0],
+                "update": ["name"]
             },
             {
                 "name": "c2",
                 "pos": [0, 0],
                 "size": [10, 10],
-                "color": [255, 215, 0]
+                "color": [255, 215, 0],
+                "update": ["name"]
             }
         ],
         "switch": [
