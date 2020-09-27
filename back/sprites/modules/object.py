@@ -6,7 +6,7 @@ class Static:
         # display
         self.type = type
         self.name, self.pos, self.size, self.color = \
-            info['name'], utils.top_left(info['pos'], info['size'], align=align), info['size'], info['color']
+            info['name'], list(utils.top_left(info['pos'], info['size'], align=align)), info['size'], info['color']
         self.speed = [0, 0]
 
     def get_rect(self, *, pan=(0, 0)):
@@ -39,7 +39,7 @@ class Movable(Static):
     def __init__(self, info, *, type='movable', align=(0, 0)):
         self.type = type
         self.name, self.pos, self.size, self.color = \
-            info['name'], utils.top_left(info['track'][0]['pos'], info['size'], align=align), info['size'], info['color']
+            info['name'], list(utils.top_left(info['track'][0]['pos'], info['size'], align=align)), info['size'], info['color']
         self.track = info['track']
         self.update_speed = True
         self.speed = self.track[0]['speed']
@@ -54,9 +54,10 @@ class Movable(Static):
     def move(self):
         if self.update_speed:
             for point in self.track:
-                if tuple(point['pos']) == self.pos:
+                if point['pos'] == self.pos:
                     self.speed = point['speed']
-        self.pos = self.pos[0] + self.speed[0], self.pos[1] + self.speed[1]
+        self.pos[0] += self.speed[0]
+        self.pos[1] += self.speed[1]
         self.update_speed = True
 
 
@@ -64,7 +65,7 @@ class Switch(Static):
     def __init__(self, info, *, type='switch', align=(0, 0)):
         self.type = type
         self.name, self.pos, self.size, self.color = \
-            info['name'], utils.top_left(info['pos'], info['size'], align=align), info['size'], info['color']
+            info['name'], list(utils.top_left(info['pos'], info['size'], align=align)), info['size'], info['color']
         self.command = info['command']
         self.state = 'close'
         self.props = {}
@@ -92,6 +93,7 @@ class Switch(Static):
             for obj in map.find_objects(command[1]):
                 if eval(f'obj.{command[2]} == {command[3]}'):
                     return True
+                print(eval(f'obj.{command[2]}'))
             return False
 
     def execute(self, map, players, command):
