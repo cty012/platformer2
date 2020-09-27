@@ -53,6 +53,7 @@ class Map:
         for obj_type in ['target', 'coin', 'obstacle', 'elevator', 'monster', 'switch']:
             names = [obj['name'] for obj in status[obj_type] if 'name' in obj.keys()]
             i = 0
+            j = 0
             while i < len(self.objects[obj_type]):
                 obj = self.objects[obj_type][i]
                 if len(obj.update) == 0:
@@ -60,8 +61,9 @@ class Map:
                 elif 'name' in obj.update and obj.name not in names:
                     self.objects[obj_type].pop(i)
                 else:
-                    self.objects[obj_type][i].set_status(status[obj_type][i])
+                    obj.set_status(status[obj_type][j])
                     i += 1
+                    j += 1
 
     def show(self, ui, *, pan=(0, 0)):
         for desc in self.descriptions:

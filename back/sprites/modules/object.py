@@ -30,7 +30,7 @@ class Static:
         return rect[0][0] < pos[0] < rect[1][0] and rect[0][1] < pos[1] < rect[1][1]
 
     def get_status(self):
-        return {param: eval(f'self.{param}') for param in self.update}
+        return {param: eval(f'self.{param}', {'self': self}) for param in self.update}
 
     def set_status(self, status):
         for param in self.update:
@@ -128,7 +128,7 @@ class Switch(Static):
                     self.execute(map, players, com)
 
     def get_status(self):
-        return {param: eval(f'self.{param}') for param in self.update}
+        return {param: eval(f'self.{param}', {'self': self}) for param in self.update}
 
     def set_status(self, status):
         for param in self.update:
