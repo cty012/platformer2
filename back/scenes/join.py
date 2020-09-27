@@ -46,7 +46,9 @@ class Scene:
                     return self.execute(name)
         # server_ip
         for key in events['key-down']:
-            if key not in self.possible():
+            if key == 'return':
+                return self.execute('connect')
+            elif key not in self.possible():
                 continue
             elif '0' <= key <= '9' or key == '.':
                 self.server_ip += key

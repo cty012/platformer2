@@ -181,7 +181,9 @@ class Game:
         }
 
     def show(self, ui):
+        # show map
         self.map.show(ui, pan=self.pan)
+        # show player
         for player in reversed(self.players):
             player.show(ui, pan=self.pan)
         # show timer

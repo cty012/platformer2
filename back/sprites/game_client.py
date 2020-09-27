@@ -130,9 +130,13 @@ class Game:
             self.connected['connected'] = False
 
     def show(self, ui):
+        # show map
         self.map.show(ui, pan=self.pan)
-        for player in self.players:
-            player.show(ui, pan=self.pan)
+        # show player
+        for player in reversed(self.players):
+            if player != self.my_player:
+                player.show(ui, pan=self.pan)
+        self.my_player.show(ui, pan=self.pan)
         # show time
         current_time = self.time.split(':')
         ui.show_text((110, 90), current_time[0], f.digital_7(50), align=(2, 2))
