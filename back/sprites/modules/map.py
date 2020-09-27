@@ -45,7 +45,7 @@ class Map:
 
     def get_status(self):
         return {
-            obj_type: [obj.get_status() for obj in self.objects[obj_type]]
+            obj_type: [obj.get_status() for obj in self.objects[obj_type] if len(obj.update) > 0]
             for obj_type in ['target', 'coin', 'obstacle', 'elevator', 'monster', 'switch']
         }
 
@@ -54,7 +54,10 @@ class Map:
             names = [obj['name'] for obj in status[obj_type]]
             i = 0
             while i < len(self.objects[obj_type]):
-                if self.objects[obj_type][i].name not in names:
+                obj = self.objects[obj_type][i]
+                if len(obj.update) == 0:
+                    i += 1
+                elif 'name' in obj.update and obj.name not in names:
                     self.objects[obj_type].pop(i)
                 else:
                     self.objects[obj_type][i].set_status(status[obj_type][i])

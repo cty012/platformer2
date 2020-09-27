@@ -49,7 +49,8 @@
                     "open": [
                         ["state", "open"]
                     ]
-                }
+                },
+                "update": ["color"]
             },
             {
                 "name": "s2",
@@ -65,7 +66,8 @@
                     "open": [
                         ["state", "open"]
                     ]
-                }
+                },
+                "update": ["color"]
             },
             {
                 "name": "s3",
@@ -81,7 +83,8 @@
                     "open": [
                         ["state", "open"]
                     ]
-                }
+                },
+                "update": ["color"]
             },
             {
                 "name": "s4",
@@ -97,7 +100,8 @@
                     "open": [
                         ["state", "open"]
                     ]
-                }
+                },
+                "update": ["color"]
             },
             {
                 "name": "s5",
@@ -113,7 +117,8 @@
                     "open": [
                         ["state", "open"]
                     ]
-                }
+                },
+                "update": ["color"]
             },
             {
                 "name": "s6",
@@ -129,12 +134,13 @@
                     "open": [
                         ["state", "open"]
                     ]
-                }
+                },
+                "update": ["color"]
             }
         ],
         "monster": [
             {
-                "name": "m0",
+                "name": "m0-lava",
                 "track": [
                     {
                         "pos": [1110, 1100],
@@ -157,7 +163,8 @@
                     }
                 ],
                 "size": [40, 60],
-                "color": [50, 205, 50]
+                "color": [50, 205, 50],
+                "update": ["pos"]
             },
             {
                 "name": "m2",
@@ -172,7 +179,8 @@
                     }
                 ],
                 "size": [40, 60],
-                "color": [50, 205, 50]
+                "color": [50, 205, 50],
+                "update": ["pos"]
             },
             {
                 "name": "m3",
@@ -187,7 +195,8 @@
                     }
                 ],
                 "size": [40, 60],
-                "color": [50, 205, 50]
+                "color": [50, 205, 50],
+                "update": ["pos"]
             }
         ],
         "elevator" : [
@@ -204,7 +213,8 @@
                     }
                 ],
                 "size": [240, 40],
-                "color": [0, 0, 128]
+                "color": [0, 0, 128],
+                "update": ["pos"]
             },
             {
                 "name": "e1",
@@ -219,7 +229,8 @@
                     }
                 ],
                 "size": [160, 30],
-                "color": [0, 0, 128]
+                "color": [0, 0, 128],
+                "update": ["pos"]
             }
         ],
         "obstacle": [
@@ -263,31 +274,36 @@
                 "name": "o-block1",
                 "pos": [450, 0],
                 "size": [20, 150],
-                "color": [0, 0, 192]
+                "color": [0, 0, 192],
+                "update": ["name"]
             },
             {
                 "name": "o-block2",
                 "pos": [3310, 1000],
                 "size": [20, 150],
-                "color": [0, 0, 192]
+                "color": [0, 0, 192],
+                "update": ["name"]
             },
             {
                 "name": "o-block3",
                 "pos": [1930, 1000],
                 "size": [140, 20],
-                "color": [0, 0, 192]
+                "color": [0, 0, 192],
+                "update": ["name"]
             },
             {
                 "name": "o-block4",
                 "pos": [500, 1000],
                 "size": [20, 150],
-                "color": [0, 0, 192]
+                "color": [0, 0, 192],
+                "update": ["name"]
             },
             {
                 "name": "o-block5",
                 "pos": [1570, 1020],
                 "size": [100, 20],
-                "color": [0, 0, 192]
+                "color": [0, 0, 192],
+                "update": ["name"]
             },
             {
                 "name": "o-block5-left",
@@ -299,7 +315,8 @@
                 "name": "o-block6",
                 "pos": [2520, 1050],
                 "size": [20, 100],
-                "color": [0, 0, 192]
+                "color": [0, 0, 192],
+                "update": ["name"]
             },
             {
                 "name": "o-left-1",

@@ -8,6 +8,10 @@ class Static:
         self.name, self.pos, self.size, self.color = \
             info['name'], list(utils.top_left(info['pos'], info['size'], align=align)), info['size'], info['color']
         self.speed = [0, 0]
+        # update
+        self.update = []
+        if 'update' in info.keys():
+            self.update = info['update']
 
     def get_rect(self, *, pan=(0, 0)):
         return [
@@ -26,10 +30,11 @@ class Static:
         return rect[0][0] < pos[0] < rect[1][0] and rect[0][1] < pos[1] < rect[1][1]
 
     def get_status(self):
-        return {'name': self.name}
+        return {param: eval(f'self.{param}') for param in self.update}
 
     def set_status(self, status):
-        self.name = status['name']
+        for param in self.update:
+            exec(f'self.{param} = status[\'{param}\']')
 
     def show(self, ui, *, pan=(0, 0)):
         ui.show_div(self.pos, self.size, color=self.color, pan=pan)
