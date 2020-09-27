@@ -93,7 +93,6 @@ class Switch(Static):
             for obj in map.find_objects(command[1]):
                 if eval(f'obj.{command[2]} == {command[3]}'):
                     return True
-                print(eval(f'obj.{command[2]}'))
             return False
 
     def execute(self, map, players, command):

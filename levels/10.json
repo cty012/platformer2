@@ -93,6 +93,7 @@
                         ["state", "open"],
                         ["color", [62, 195, 128]],
                         ["object", "e2-2", "speed", "[0, 1]"]
+                        ["object", "e2-2", "update_speed", "False"]
                     ],
                     "open": [
                         ["state", "open"]
