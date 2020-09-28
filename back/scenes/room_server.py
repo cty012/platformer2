@@ -16,10 +16,11 @@ class Scene:
 
         # server and client
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.ip = [
+        ips = [
             ip for ip in socket.gethostbyname_ex(socket.gethostname())[2]
             if utils.is_private_ip(ip)
-        ][0]
+        ]
+        self.ip = ips[0] if len(ips) > 0 else '127.0.0.1'
         self.server.bind((self.ip, 5050))
         self.server.settimeout(1.0)
         self.server.listen()
@@ -46,6 +47,8 @@ class Scene:
             for name in self.buttons:
                 if self.buttons[name].in_range(events['mouse-pos']):
                     return self.execute(name)
+        if 'return' in events['key-down']:
+            return self.execute('play')
         return [None]
 
     def add_clients(self, status):
