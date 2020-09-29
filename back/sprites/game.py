@@ -27,6 +27,7 @@ class Game:
         self.alpha = None
         # thread
         self.thread_recv = []
+        self.thread_send = None
         self.connected = {'connected': True}
         self.prepare()
         # timer
@@ -49,9 +50,13 @@ class Game:
         # thread
         if self.mode['mode'] == 'mult':
             for i in range(len(self.mode['connect']['clients'])):
+                # receive
                 new_thread = Thread(target=self.receive(i), name=f'recv-{i}', daemon=True)
                 self.thread_recv.append(new_thread)
                 new_thread.start()
+                # send
+                self.thread_send = Thread(target=self.send_data, name=f'send', daemon=True)
+                self.thread_send.start()
 
 ########################################################################################################################
 # EVENTS #
@@ -90,6 +95,11 @@ class Game:
             self.send('time' + self.timer.get_str_time())
         if self.win is not None:
             self.connected['connected'] = False
+
+    def send_data(self):
+        while self.connected['connected']:
+            self.send(json.dumps(self.get_status()))
+            self.send('time' + self.timer.get_str_time())
 
     def send(self, msg):
         try:
