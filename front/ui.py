@@ -63,7 +63,15 @@ class UI:
             self.screen.blit(text_img, (pos[0] + x, pos[1]))
             x += text_img.get_size()[0]
 
-    def show_img(self, pos, path, *, align=(0, 0), pan=(0, 0)):
+    def get_text_img(self, text, font, *, color=(0, 0, 0), background=None):
+        return self.font.render_font(font).render(text, True, color, background)
+
+    def show_img(self, pos, img, *, align=(0, 0), pan=(0, 0)):
+        pos = (pos[0] + pan[0], pos[1] + pan[1])
+        size = img.get_size()
+        self.screen.blit(img, utils.top_left(pos, size, align=align))
+
+    def show_img_by_path(self, pos, path, *, align=(0, 0), pan=(0, 0)):
         pos = (pos[0] + pan[0], pos[1] + pan[1])
         img = self.image.get(path)
         size = img.get_size()
