@@ -68,7 +68,7 @@ class Game:
             for coin in self.map.objects['coin']:
                 if player.collide_with(coin):
                     self.score += 1
-                    self.map.objects['coin'].remove(coin)
+                    self.map.remove_objects(coin.name)
             # trigger switches
             for switch in self.map.objects['switch']:
                 if player.collide_with(switch):

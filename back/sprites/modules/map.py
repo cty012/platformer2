@@ -55,6 +55,8 @@ class Map:
                 i += 1
 
     def get_status(self):
+        names = [obj.name for obj in self.updatable if 'name' in obj.update]
+        print(names)
         return [obj.get_status() for obj in self.updatable if len(obj.update) > 0]
 
     def set_status(self, status):
