@@ -18,6 +18,7 @@ class Map:
             'coin': [],
             'monster': [],
         }
+        self.updatable = []
         self.init_objects()
         self.descriptions = []
         if 'description' in self.map_info.keys():
@@ -43,27 +44,29 @@ class Map:
                 results.append(obj)
         return results
 
+    def remove_objects(self, name):
+        for obj in self.find_objects(name):
+            self.objects[obj.type].remove(obj)
+        i = 0
+        while i < len(self.updatable):
+            if self.updatable[i].name == name:
+                self.updatable.pop(i)
+            else:
+                i += 1
+
     def get_status(self):
-        return {
-            obj_type: [obj.get_status() for obj in self.objects[obj_type] if len(obj.update) > 0]
-            for obj_type in ['target', 'coin', 'obstacle', 'elevator', 'monster', 'switch']
-        }
+        return [obj.get_status() for obj in self.updatable if len(obj.update) > 0]
 
     def set_status(self, status):
-        for obj_type in ['target', 'coin', 'obstacle', 'elevator', 'monster', 'switch']:
-            names = [obj['name'] for obj in status[obj_type] if 'name' in obj.keys()]
-            i = 0
-            j = 0
-            while i < len(self.objects[obj_type]):
-                obj = self.objects[obj_type][i]
-                if len(obj.update) == 0:
-                    i += 1
-                elif 'name' in obj.update and obj.name not in names:
-                    self.objects[obj_type].pop(i)
-                else:
-                    obj.set_status(status[obj_type][j])
-                    i += 1
-                    j += 1
+        names = [obj_status['name'] for obj_status in status if 'name' in obj_status.keys()]
+        i = 0
+        while i < len(self.updatable):
+            obj = self.updatable[i]
+            if 'name' in obj.update and obj.name not in names:
+                self.updatable.pop(i)
+            else:
+                obj.set_status(status[i])
+                i += 1
 
     def show(self, ui, *, pan=(0, 0)):
         for desc in self.descriptions:
@@ -82,9 +85,16 @@ class MapLoader:
     def load(cls, map, map_info):
         for obj_name in map.objects:
             for obj_info in map_info[obj_name]:
+                # create object
                 if obj_name in ['target', 'coin', 'obstacle']:
-                    map.objects[obj_name].append(o.Static(obj_info, type=obj_name))
+                    obj = o.Static(obj_info, type=obj_name)
                 elif obj_name in ['elevator', 'monster']:
-                    map.objects[obj_name].append(o.Movable(obj_info, type=obj_name))
+                    obj = o.Movable(obj_info, type=obj_name)
                 elif obj_name == 'switch':
-                    map.objects[obj_name].append(o.Switch(obj_info, type=obj_name))
+                    obj = o.Switch(obj_info, type=obj_name)
+                else:
+                    obj = None
+                # append to lists
+                map.objects[obj_name].append(obj)
+                if 'update' in obj_info.keys():
+                    map.updatable.append(obj)
