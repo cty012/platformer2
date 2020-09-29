@@ -6,6 +6,7 @@ class Player:
     def __init__(self, player_info, id=None):
         # basic info
         self.id = id
+        self.id_img = None
         self.pos = player_info['pos']
         self.size = player_info['size']
         self.color = player_info['color']
@@ -84,6 +85,12 @@ class Player:
         # update speed
         self.speed[1] += self.gravity[1]
 
+    def move_inertia(self, map):
+        # move horizontally
+        self.pos = self.check_obstacles(map, self.speed[0], 0)
+        # move vertically
+        self.pos = self.check_obstacles(map, self.speed[1], 1)
+
     def get_status(self):
         return {'pos': self.pos}
 
@@ -94,5 +101,7 @@ class Player:
         ui.show_div(self.pos, self.size, color=self.color, pan=pan)
         # show id
         if self.id is not None:
+            if self.id_img is None:
+                self.id_img = ui.get_text_img(str(self.id), font=f.tnr(25), color=(255, 255, 255))
             center = (self.pos[0] + self.size[0] // 2, self.pos[1] + self.size[1] // 2)
-            ui.show_text(center, str(self.id), font=f.tnr(25), color=(255, 255, 255), pan=pan, align=(1, 1))
+            ui.show_img(center, self.id_img, pan=pan, align=(1, 1))

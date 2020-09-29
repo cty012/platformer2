@@ -50,6 +50,13 @@ class Game:
 # EVENTS #
 ########################################################################################################################
     def process_events(self, events):
+        for object_type in ['elevator', 'monster']:
+            for obj in self.map.objects[object_type]:
+                obj.move()
+        self.my_player.process_pressed(events['key-pressed'], events['key-down'])
+        self.my_player.move(self.map)
+        self.refresh_pan()
+        # send data
         if self.connected['connected']:
             self.send(events)
 
@@ -88,8 +95,6 @@ class Game:
                 else:
                     status = json.loads(msg)
                     self.set_status(status)
-            # refresh pan
-            self.refresh_pan()
         print('CLIENT END receiving...')
 
 ########################################################################################################################
