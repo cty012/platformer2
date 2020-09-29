@@ -85,12 +85,6 @@ class Player:
         # update speed
         self.speed[1] += self.gravity[1]
 
-    def move_inertia(self, map):
-        # move horizontally
-        self.pos = self.check_obstacles(map, self.speed[0], 0)
-        # move vertically
-        self.pos = self.check_obstacles(map, self.speed[1], 1)
-
     def get_status(self):
         return {'pos': self.pos}
 
