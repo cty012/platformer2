@@ -25,6 +25,8 @@ class Scene:
 
     def process_events(self, events):
         # game ended
+        if self.game.win == 'draw':
+            return self.execute('quit')
         if self.game.win is not None:
             # stop timer if game ends
             if not self.is_client() and self.game.timer.is_running():
@@ -53,6 +55,8 @@ class Scene:
                     self.game.timer.start()
         elif name == 'quit':
             self.game.close_socket()
+            if self.is_server():
+                self.game.send('close')
             return ['menu']
         return [None]
 
