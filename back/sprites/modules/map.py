@@ -63,7 +63,7 @@ class Map:
         while i < len(self.updatable):
             obj = self.updatable[i]
             if 'name' in obj.update and obj.name not in names:
-                self.updatable.pop(i)
+                self.remove_objects(obj.name)
             else:
                 obj.set_status(status[i])
                 i += 1
