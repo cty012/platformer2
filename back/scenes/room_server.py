@@ -16,6 +16,7 @@ class Scene:
 
         # server and client
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         ips = [
             ip for ip in socket.gethostbyname_ex(socket.gethostname())[2]
             if utils.is_private_ip(ip)
@@ -24,6 +25,7 @@ class Scene:
         self.server.bind((self.ip, 5050))
         self.server.settimeout(1.0)
         self.server.listen()
+
         self.clients = []  # {ip, port, client}
         self.status = {'running': True}
         self.thread = Thread(target=self.add_clients(self.status), name='add-clients', daemon=True)

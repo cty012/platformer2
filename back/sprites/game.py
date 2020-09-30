@@ -2,11 +2,10 @@ import json
 import socket
 from threading import Thread
 
+import back.sprites.modules.clock as c
 import back.sprites.modules.map as m
 import back.sprites.modules.player as p
 from utils.parser import Parser
-import utils.fonts as f
-import utils.stopwatch as sw
 
 
 class Game:
@@ -30,8 +29,8 @@ class Game:
         self.connected = {'connected': True}
         self.prepare()
         # timer
-        self.timer = sw.Stopwatch()
-        self.timer.start()
+        self.clock = c.Clock((120, 90))
+        self.clock.stopwatch.start()
 
 ########################################################################################################################
 # PREPARATION #
@@ -87,7 +86,7 @@ class Game:
         # send data to clients
         if self.mode['mode'] == 'mult' and self.connected['connected']:
             self.send(json.dumps(self.get_status()))
-            self.send('time' + self.timer.get_str_time())
+            self.send('time' + self.clock.stopwatch.get_str_time())
         if self.win is not None:
             self.connected['connected'] = False
 
@@ -110,7 +109,8 @@ class Game:
                     events_strs = parser.parse(client['socket'].recv(1 << 20))
                 except socket.timeout:
                     continue
-                except json.decoder.JSONDecodeError:
+                except json.decoder.JSONDecodeError as e:
+                    print('\tJSON Decode Error!')
                     continue
                 for events_str in events_strs:
                     events = json.loads(events_str)
@@ -165,6 +165,7 @@ class Game:
         self.send('close')
 
     def close_socket(self):
+        self.connected['connected'] = False
         if self.mode['mode'] == 'sing':
             return
         self.mode['connect']['socket'].close()
@@ -187,8 +188,4 @@ class Game:
         for player in reversed(self.players):
             player.show(ui, pan=self.pan)
         # show timer
-        current_time = self.timer.get_str_time().split(':')
-        ui.show_text((110, 90), current_time[0], f.digital_7(50), align=(2, 2))
-        ui.show_text((120, 90), ':', f.digital_7(50), align=(1, 2))
-        ui.show_text((130, 90), current_time[1], f.digital_7(50), align=(0, 2))
-        ui.show_text((185, 90), current_time[2], f.digital_7(30), align=(0, 2))
+        self.clock.show(ui)

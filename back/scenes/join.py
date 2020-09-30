@@ -20,8 +20,8 @@ class Scene:
 
         # socket
         self.server_ip = ''
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client.settimeout(1.0)
+        self.client = None
+        self.init_socket()
 
         # gui
         self.background = c.Component(lambda ui: ui.show_div((0, 0), self.args.size, color=(60, 179, 113)))
@@ -37,6 +37,11 @@ class Scene:
                 font=f.tnr(22), align=(1, 1), background=(210, 210, 210)
             ),
         }
+
+    def init_socket(self):
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.client.settimeout(1.0)
 
     def process_events(self, events):
         # click button
@@ -81,8 +86,7 @@ class Scene:
                 return ['room_client', self.server_ip, self.client]
             except socket.timeout:
                 self.set_error_msg('Connection failed: Timeout')
-                self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.client.settimeout(1.0)
+                self.init_socket()
             except OSError as e:
                 self.set_error_msg('Connection failed: Invalid address')
         elif name == 'back':

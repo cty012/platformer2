@@ -29,8 +29,8 @@ class Scene:
             return self.execute('quit')
         if self.game.win is not None:
             # stop timer if game ends
-            if not self.is_client() and self.game.timer.is_running():
-                self.game.timer.stop()
+            if not self.is_client() and self.game.clock.stopwatch.is_running():
+                self.game.clock.stopwatch.stop()
             return self.execute(self.score_board.process_events(events))
         # game paused
         elif self.game_menu.active:
@@ -49,10 +49,10 @@ class Scene:
             self.game_menu.active = not self.game_menu.active
             # pause / unpause timer
             if not self.is_client():
-                if self.game.timer.is_running():
-                    self.game.timer.stop()
+                if self.game.clock.stopwatch.is_running():
+                    self.game.clock.stopwatch.stop()
                 else:
-                    self.game.timer.start()
+                    self.game.clock.stopwatch.start()
         elif name == 'quit':
             if self.is_server():
                 self.game.close_client_sockets()
