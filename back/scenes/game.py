@@ -54,9 +54,8 @@ class Scene:
                 else:
                     self.game.timer.start()
         elif name == 'quit':
+            self.game.close_client_sockets()
             self.game.close_socket()
-            if self.is_server():
-                self.game.send('close')
             return ['menu']
         return [None]
 
