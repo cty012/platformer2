@@ -5,6 +5,7 @@ from threading import Thread
 import back.sprites.modules.clock as c
 import back.sprites.modules.map as m
 import back.sprites.modules.player as p
+import back.sprites.modules.score_display as sd
 import utils.fonts as f
 from utils.parser import Parser
 
@@ -33,6 +34,7 @@ class Game:
         # time
         self.time = '00:00:00'
         self.clock = c.Clock((120, 90))
+        self.score_display = sd.ScoreDisplay((70, 150))
 
 ########################################################################################################################
 # PREPARATION #
@@ -145,8 +147,10 @@ class Game:
             if player != self.my_player:
                 player.show(ui, pan=self.pan)
         self.my_player.show(ui, pan=self.pan)
-        # show time
+        # show timer
         self.clock.show(ui, time=self.time.split(':'))
+        # show score
+        self.score_display.show(ui, score=self.score)
         # show pause message
         if self.paused:
             ui.show_div((self.args.size[0] // 2, self.args.size[1] // 2), (400, 100), color=(192, 192, 192), align=(1, 1))
