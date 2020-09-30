@@ -81,7 +81,9 @@ class Scene:
                 return ['room_client', self.server_ip, self.client]
             except socket.timeout:
                 self.set_error_msg('Connection failed: Timeout')
-            except OSError:
+                self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.client.settimeout(1.0)
+            except OSError as e:
                 self.set_error_msg('Connection failed: Invalid address')
         elif name == 'back':
             self.client.close()
