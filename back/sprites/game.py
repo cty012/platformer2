@@ -5,6 +5,7 @@ from threading import Thread
 import back.sprites.modules.clock as c
 import back.sprites.modules.map as m
 import back.sprites.modules.player as p
+import back.sprites.modules.score_display as sd
 from utils.parser import Parser
 
 
@@ -28,9 +29,10 @@ class Game:
         self.thread_recv = []
         self.connected = {'connected': True}
         self.prepare()
-        # timer
+        # others
         self.clock = c.Clock((120, 90))
         self.clock.stopwatch.start()
+        self.score_display = sd.ScoreDisplay((70, 150))
 
 ########################################################################################################################
 # PREPARATION #
@@ -189,3 +191,5 @@ class Game:
             player.show(ui, pan=self.pan)
         # show timer
         self.clock.show(ui)
+        # show score
+        self.score_display.show(ui, score=self.score)

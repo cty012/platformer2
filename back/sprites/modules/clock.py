@@ -15,9 +15,9 @@ class Clock:
     def show(self, ui, *, time=None):
         # get text img
         if self.text_img is None:
-            self.text_img = {str(c): ui.get_text_img(str(c), f.digital_7(50)) for c in list(range(10)) + [':']}
+            self.text_img = {str(c): ui.get_text_img(str(c), f.get_font('digital-7-mono', 50)) for c in list(range(10)) + [':']}
             self.text_width = self.text_img['0'].get_size()[0]
-            self.small_text_img = {str(c): ui.get_text_img(str(c), f.digital_7(30)) for c in list(range(10)) + [':']}
+            self.small_text_img = {str(c): ui.get_text_img(str(c), f.get_font('digital-7-mono', 30)) for c in list(range(10)) + [':']}
             self.small_text_width = self.small_text_img['0'].get_size()[0]
         # show time
         current_time = self.stopwatch.get_str_time().split(':') if time is None else time

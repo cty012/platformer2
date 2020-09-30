@@ -92,7 +92,6 @@ class Game:
                 elif msg == 'close':
                     self.connected['connected'] = False
                     self.win = 'draw'
-                    continue
                 # update status
                 elif msg.startswith('time'):
                     self.time = msg[4:]

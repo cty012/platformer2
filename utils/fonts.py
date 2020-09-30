@@ -10,8 +10,3 @@ def tnr(font_size):
 # cambria
 def cambria(font_size):
     return 'src', 'cambria.ttf', font_size
-
-
-# digital
-def digital_7(font_size):
-    return 'src', 'digital-7-mono.ttf', font_size
