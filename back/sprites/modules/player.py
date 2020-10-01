@@ -7,9 +7,9 @@ class Player:
         # basic info
         self.id = id
         self.id_img = None
-        self.pos = player_info['pos']
-        self.size = player_info['size']
-        self.color = player_info['color']
+        self.pos = player_info['pos'][:]
+        self.size = player_info['size'][:]
+        self.color = player_info['color'][:]
         self.squeezable = squeezable
         self.compressed_size = 0
         # movement
@@ -124,10 +124,11 @@ class Player:
         self.speed[1] += self.gravity[1]
 
     def get_status(self):
-        return {'pos': self.pos}
+        return {'pos': self.pos, 'size': self.size}
 
     def set_status(self, status):
         self.pos = status['pos']
+        self.size = status['size']
 
     def show(self, ui, *, pan=(0, 0)):
         ui.show_div(self.pos, self.size, color=self.color, pan=pan)
