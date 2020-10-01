@@ -123,7 +123,8 @@ class Game:
     def close_socket(self):
         if self.mode['mode'] == 'sing':
             return
-        self.mode['connect']['socket'].shutdown(0)
+        try:
+            self.mode['connect']['socket'].shutdown(0)
         self.mode['connect']['socket'].close()
 
 ########################################################################################################################
