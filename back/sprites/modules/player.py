@@ -92,7 +92,6 @@ class Player:
             orig_rect = [orig_pos, [orig_pos[0] + self.size[0], orig_pos[1] + self.size[1]]]
             rel_pos = utils.direction(orig_rect, obs.get_orig_rect(), 1)
             diff = (self.pos[1] + self.size[1]) - obs.pos[1] if rel_pos == 'low' else (obs.pos[1] + obs.size[1]) - self.pos[1]
-            print(obs.name, diff)
             self.compressed_size = self.squeeze(self.pos, self.size, self.compressed_size, diff, rel_pos)
 
     def squeeze(self, pos, size, compressed_size, length, direction):
