@@ -63,7 +63,7 @@ class Player:
                 # return to the edge
                 if rel_pos == 'low' and magnitude >= obs.speed[direction]:
                     pos[direction] = obs_rect[0][direction] - self.size[direction]
-                    self.speed[direction] = 0
+                    self.speed[direction] = obs.speed[direction]
                     # detect if player is on the ground
                     if direction == 1:
                         self.reference_frame = obs
@@ -71,7 +71,7 @@ class Player:
                         self.jump_times = 1
                 elif rel_pos == 'high' and magnitude <= obs.speed[direction]:
                     pos[direction] = obs_rect[1][direction]
-                    self.speed[direction] = 0
+                    self.speed[direction] = obs.speed[direction]
         return pos
 
     def collide_with(self, obj):
