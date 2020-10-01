@@ -85,7 +85,6 @@ class Scene:
         elif name == 'back':
             self.close_client_sockets()
             self.status['running'] = False
-            time.sleep(0.5)
             self.server.close()
             return ['level']
         return [None]
