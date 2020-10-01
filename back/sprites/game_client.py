@@ -125,6 +125,8 @@ class Game:
             return
         try:
             self.mode['connect']['socket'].shutdown(0)
+        except OSError as e:
+            print(e)
         self.mode['connect']['socket'].close()
 
 ########################################################################################################################
