@@ -3,13 +3,15 @@ import utils.functions as utils
 
 
 class Player:
-    def __init__(self, player_info, id=None):
+    def __init__(self, player_info, id=None, squeezable=True):
         # basic info
         self.id = id
         self.id_img = None
         self.pos = player_info['pos']
         self.size = player_info['size']
         self.color = player_info['color']
+        self.squeezable = squeezable
+        self.compressed_size = 0
         # movement
         self.speed = [0, 0]
         self.gravity = [0, 2]
@@ -18,14 +20,17 @@ class Player:
         self.ground = False
         self.jump_times = 0
 
+    def create_rect(self, pos1, pos2):
+        return [
+            [min(pos1[0], pos2[0]), min(pos1[1], pos2[1])],
+            [max(pos1[0], pos2[0]) + self.size[0], max(pos1[1], pos2[1]) + self.size[1]]
+        ]
+
     def get_rect(self):
-        return [[self.pos[0], self.pos[1]], [self.pos[0] + self.size[0], self.pos[1] + self.size[1]]]
+        return self.create_rect(self.pos, self.pos)
 
     def get_moving_rect(self, target_pos):
-        return [
-            [min(self.pos[0], target_pos[0]), min(self.pos[1], target_pos[1])],
-            [max(self.pos[0], target_pos[0]) + self.size[0], max(self.pos[1], target_pos[1]) + self.size[1]]
-        ]
+        return self.create_rect(self.pos, target_pos)
 
     def process_pressed(self, pressed, down):
         self.sync()
@@ -55,7 +60,7 @@ class Player:
         pos = self.pos[:]
         pos[direction] += magnitude
         # revise expected position
-        for obs in map.objects['obstacle'] + map.objects['elevator']:
+        for obs in map.objects['elevator'] + map.objects['obstacle']:
             obs_rect = obs.get_rect()
             obs_orig_rect = obs.get_orig_rect()
             if utils.overlap(self.get_moving_rect(pos), obs_rect):
@@ -74,14 +79,48 @@ class Player:
                     self.speed[direction] = obs.speed[direction]
         return pos
 
+    def check_squeeze(self, map):
+        # extend by 4
+        orig_pos, orig_size = self.pos[:], self.size[:]
+        self.compressed_size = self.squeeze(
+            self.pos, self.size, self.compressed_size, -4 if self.compressed_size > 4 else -self.compressed_size, 'high'
+        )
+        # squeeze
+        for obs in map.objects['obstacle'] + map.objects['elevator']:
+            if not utils.overlap(self.get_rect(), obs.get_rect()):
+                continue
+            orig_rect = [orig_pos, [orig_pos[0] + self.size[0], orig_pos[1] + self.size[1]]]
+            rel_pos = utils.direction(orig_rect, obs.get_orig_rect(), 1)
+            diff = (self.pos[1] + self.size[1]) - obs.pos[1] if rel_pos == 'low' else (obs.pos[1] + obs.size[1]) - self.pos[1]
+            print(obs.name, diff)
+            self.compressed_size = self.squeeze(self.pos, self.size, self.compressed_size, diff, rel_pos)
+
+    def squeeze(self, pos, size, compressed_size, length, direction):
+        if direction != 'low':
+            pos[1] += length
+        size[1] -= length
+        compressed_size += length
+        return compressed_size
+
     def collide_with(self, obj):
         return utils.overlap(self.get_rect(), obj.get_rect())
+
+    def will_collide_with(self, obj):
+        pos1 = self.pos[:]
+        pos1[0] += self.speed[0]
+        pos2 = pos1[:]
+        pos2[1] += self.speed[1]
+        return utils.overlap(self.get_moving_rect(pos1), obj.get_rect()) or \
+               utils.overlap(self.create_rect(pos1, pos2), obj.get_rect())
 
     def move(self, map):
         # move horizontally
         self.pos = self.check_obstacles(map, self.speed[0], 0)
         # move vertically
         self.pos = self.check_obstacles(map, self.speed[1], 1)
+        # squeeze
+        if self.squeezable:
+            self.check_squeeze(map)
         # update speed
         self.speed[1] += self.gravity[1]
 

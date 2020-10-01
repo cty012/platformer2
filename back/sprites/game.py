@@ -62,12 +62,12 @@ class Game:
         for player in self.players:
             # collect coins
             for coin in self.map.objects['coin']:
-                if player.collide_with(coin):
+                if player.will_collide_with(coin):
                     self.score += 1
                     self.map.remove_objects(coin.name)
             # trigger switches
             for switch in self.map.objects['switch']:
-                if player.collide_with(switch):
+                if player.will_collide_with(switch):
                     switch.trigger(self.map, self.players)
                 else:
                     switch.auto(self.map, self.players)
@@ -140,15 +140,21 @@ class Game:
         )
 
     def check_win(self):
+        if self.win is not None:
+            return
         for player in self.players:
-            if self.win is not None:
-                return
             # reach target -> WIN
             for target in self.map.objects['target']:
                 if player.collide_with(target):
                     self.win = True
                     self.close_client_sockets()
                     return
+        for player in self.players:
+            # squeezed to zero -> LOSE
+            if player.size[0] * player.size[1] == 0:
+                self.win = False
+                self.close_client_sockets()
+                return
             # fall -> LOSE
             if player.pos[1] > self.map.size[1] + 300:
                 self.win = False
