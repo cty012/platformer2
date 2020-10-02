@@ -106,7 +106,8 @@ class Game:
 # OPERATIONS #
 ########################################################################################################################
     def get_target_pan(self):
-        pos, screen_size, map_size = self.my_player.pos, self.args.size, self.map.size
+        pos, size, screen_size, map_size = self.my_player.pos, self.my_player.size, self.args.size, self.map.size
+        pos = (pos[0] + size[0] // 2, pos[1] + size[1] // 2)
         pan = pos[0] - screen_size[0] // 2, pos[1] - screen_size[1] // 2
         # check boundaries
         pan = max(pan[0], 0), max(pan[1], 0)
@@ -116,8 +117,8 @@ class Game:
     def refresh_pan(self):
         self.target_pan = self.get_target_pan()
         self.pan = (
-            (self.pan[0] * (self.alpha - 1) + self.target_pan[0]) // self.alpha,
-            (self.pan[1] * (self.alpha - 1) + self.target_pan[1]) // self.alpha
+            round((self.pan[0] * (self.alpha - 1) + self.target_pan[0]) / self.alpha),
+            round((self.pan[1] * (self.alpha - 1) + self.target_pan[1]) / self.alpha)
         )
 
     def close_socket(self):

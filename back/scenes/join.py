@@ -3,6 +3,7 @@ import socket
 
 import back.sprites.component as c
 import utils.fonts as f
+import utils.functions as utils
 import utils.stopwatch as sw
 
 
@@ -79,7 +80,7 @@ class Scene:
 
     def execute(self, name):
         if name == 'connect':
-            if not re.match(self.regex_full, self.server_ip):
+            if not utils.is_ip(self.server_ip):
                 return [None]
             try:
                 self.client.connect((self.server_ip, 5050))
@@ -96,7 +97,6 @@ class Scene:
         return [None]
 
     def set_error_msg(self, msg):
-        print(msg)
         self.error_msg = msg
         self.error_msg_clock.clear()
         self.error_msg_clock.start()

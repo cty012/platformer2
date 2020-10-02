@@ -135,8 +135,8 @@ class Game:
     def refresh_pan(self):
         self.target_pan = self.get_target_pan()
         self.pan = (
-            (self.pan[0] * (self.alpha - 1) + self.target_pan[0]) // self.alpha,
-            (self.pan[1] * (self.alpha - 1) + self.target_pan[1]) // self.alpha
+            round((self.pan[0] * (self.alpha - 1) + self.target_pan[0]) / self.alpha),
+            round((self.pan[1] * (self.alpha - 1) + self.target_pan[1]) / self.alpha)
         )
 
     def check_win(self):
