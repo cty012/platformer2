@@ -19,7 +19,7 @@ class Player:
         self.reference_frame = None
         self.ground = False
         self.jump_times = 0
-        self.directions = {}
+        self.rel_pos = {}
 
     def create_rect(self, pos1, pos2):
         return [
@@ -57,7 +57,7 @@ class Player:
 
     def get_rel_pos(self, map):
         for obs in map.objects['elevator'] + map.objects['obstacle']:
-            self.directions[obs] = [utils.direction(self.get_rect(), obs.get_orig_rect(), d) for d in range(2)]
+            self.rel_pos[obs] = [utils.direction(self.get_rect(), obs.get_orig_rect(), d) for d in range(2)]
 
     def check_obstacles(self, map, magnitude, direction):
         self.ground = False
@@ -68,7 +68,7 @@ class Player:
         for obs in map.objects['elevator'] + map.objects['obstacle']:
             obs_rect = obs.get_rect()
             if utils.overlap(self.get_moving_rect(pos), obs_rect):
-                rel_pos = self.directions[obs][direction]
+                rel_pos = self.rel_pos[obs][direction]
                 # return to the edge
                 if rel_pos == 'low' and magnitude >= obs.speed[direction]:
                     pos[direction] = obs_rect[0][direction] - self.size[direction]
@@ -92,7 +92,7 @@ class Player:
         for obs in map.objects['obstacle'] + map.objects['elevator']:
             if not utils.overlap(self.get_rect(), obs.get_rect()):
                 continue
-            rel_pos = self.directions[obs][1]
+            rel_pos = self.rel_pos[obs][1]
             if rel_pos is None:
                 continue
             diff = (self.pos[1] + self.size[1]) - obs.pos[1] if rel_pos == 'low' else (obs.pos[1] + obs.size[1]) - self.pos[1]
