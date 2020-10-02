@@ -1,6 +1,5 @@
 import utils.stopwatch as sw
 import utils.fonts as f
-import utils.functions as utils
 
 
 class Clock:

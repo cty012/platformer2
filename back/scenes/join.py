@@ -89,6 +89,7 @@ class Scene:
                 self.init_socket()
             except OSError as e:
                 self.set_error_msg('Connection failed: Invalid address')
+                print(e)
         elif name == 'back':
             self.client.close()
             return ['menu']

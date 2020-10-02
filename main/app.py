@@ -2,8 +2,11 @@ import front.frontend as f
 import back.backend as b
 import utils.args as a
 
-# Front end: UI, user event
-# Back end: ...
+"""
+App: main loop
+Front end: UI & events
+Back end: scenes and sprites
+"""
 
 
 class App:

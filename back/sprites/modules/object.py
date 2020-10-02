@@ -1,17 +1,19 @@
 import utils.functions as utils
 
 
-class Static:
-    def __init__(self, info, *, type='static', align=(0, 0)):
-        # display
+class Object:
+    def __init__(self, info, type):
+        # info
         self.type = type
-        self.name, self.pos, self.size, self.color = \
-            info['name'], list(utils.top_left(info['pos'], info['size'], align=align)), info['size'], info['color']
+        self.name = info['name']
+        # show
+        self.pos = [0, 0]
+        self.size = info['size']
+        self.color = info['color']
+        # move
         self.speed = [0, 0]
         # update
         self.update = []
-        if 'update' in info.keys():
-            self.update = info['update']
 
     def get_rect(self, *, pan=(0, 0)):
         return [
@@ -40,25 +42,26 @@ class Static:
         ui.show_div(self.pos, self.size, color=self.color, pan=pan)
 
 
-class Movable(Static):
+class Static(Object):
+    def __init__(self, info, *, type='static', align=(0, 0)):
+        super().__init__(info, type)
+        self.pos = list(utils.top_left(info['pos'], info['size'], align=align))
+        if 'update' in info.keys():
+            self.update = info['update']
+
+
+class Movable(Object):
     def __init__(self, info, *, type='movable', align=(0, 0)):
-        self.type = type
-        self.name, self.pos, self.size, self.color = \
-            info['name'], list(utils.top_left(info['track'][0]['pos'], info['size'], align=align)), info['size'], info['color']
+        super().__init__(info, type)
+        # show
+        self.pos = list(utils.top_left(info['track'][0]['pos'], info['size'], align=align))
+        # move
         self.track = info['track']
         self.update_speed = True
         self.speed = self.track[0]['speed']
         # update
-        self.update = []
         if 'update' in info.keys():
             self.update = info['update']
-
-    def get_status(self):
-        return {param: eval(f'self.{param}', {'self': self}) for param in self.update}
-
-    def set_status(self, status):
-        for param in self.update:
-            exec(f'self.{param} = status[\'{param}\']')
 
     def move(self):
         if self.update_speed:
@@ -70,14 +73,14 @@ class Movable(Static):
         self.update_speed = True
 
 
-class Switch(Static):
+class Switch(Object):
     def __init__(self, info, *, type='switch', align=(0, 0)):
-        self.type = type
-        self.name, self.pos, self.size, self.color = \
-            info['name'], list(utils.top_left(info['pos'], info['size'], align=align)), info['size'], info['color']
+        super().__init__(info, type)
+        self.pos = list(utils.top_left(info['pos'], info['size'], align=align))
+        # command
         self.command = info['command']
         self.state = 'close'
-        self.props = {}
+        # move
         self.speed = [0, 0]
         # update
         self.update = []
@@ -125,10 +128,3 @@ class Switch(Static):
             if self.compare(map, players, command[1]):
                 for com in command[2]:
                     self.execute(map, players, com)
-
-    def get_status(self):
-        return {param: eval(f'self.{param}', {'self': self}) for param in self.update}
-
-    def set_status(self, status):
-        for param in self.update:
-            exec(f'self.{param} = status[\'{param}\']')

@@ -111,7 +111,7 @@ class Game:
                     events_strs = parser.parse(client['socket'].recv(1 << 20))
                 except socket.timeout:
                     continue
-                except json.decoder.JSONDecodeError as e:
+                except json.decoder.JSONDecodeError:
                     print('\tJSON Decode Error!')
                     continue
                 for events_str in events_strs:
@@ -186,7 +186,7 @@ class Game:
             'win': self.win,
             'score': self.score,
             'map': self.map.get_status(),
-            'players': [p.get_status() for p in self.players]
+            'players': [player.get_status() for player in self.players]
         }
 
     def show(self, ui):

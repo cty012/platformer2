@@ -1,7 +1,6 @@
 import json
 import socket
 from threading import Thread
-import time
 
 import back.sprites.component as c
 import utils.fonts as f
@@ -99,7 +98,7 @@ class Scene:
         self.background.show(ui)
         ui.show_text((self.args.size[0] // 2, 100), f'IP: {self.ip}', f.cambria(60), color=(0, 0, 128), align=(1, 1))
         # show connected ips
-        ui.show_text((self.args.size[0] // 2, 180), 'client ip', f.tnr(30), color = (128, 0, 0), align=(1, 1))
+        ui.show_text((self.args.size[0] // 2, 180), 'client ip', f.tnr(30), color=(128, 0, 0), align=(1, 1))
         for i, client in enumerate(self.clients):
             ui.show_text((self.args.size[0] // 2, 180 + (i + 1) * 60), client['ip'], f.tnr(30), align=(1, 1))
         # show buttons
