@@ -19,6 +19,7 @@ class Player:
         self.reference_frame = None
         self.ground = False
         self.jump_times = 0
+        self.directions = {}
 
     def create_rect(self, pos1, pos2):
         return [
@@ -54,6 +55,10 @@ class Player:
         else:
             self.speed[0] = self.reference_frame.speed[0]
 
+    def get_rel_pos(self, map):
+        for obs in map.objects['elevator'] + map.objects['obstacle']:
+            self.directions[obs] = [utils.direction(self.get_rect(), obs.get_orig_rect(), d) for d in range(2)]
+
     def check_obstacles(self, map, magnitude, direction):
         self.ground = False
         # calculate expected position
@@ -62,9 +67,8 @@ class Player:
         # revise expected position
         for obs in map.objects['elevator'] + map.objects['obstacle']:
             obs_rect = obs.get_rect()
-            obs_orig_rect = obs.get_orig_rect()
             if utils.overlap(self.get_moving_rect(pos), obs_rect):
-                rel_pos = utils.direction(self.get_rect(), obs_orig_rect, direction)
+                rel_pos = self.directions[obs][direction]
                 # return to the edge
                 if rel_pos == 'low' and magnitude >= obs.speed[direction]:
                     pos[direction] = obs_rect[0][direction] - self.size[direction]
@@ -81,7 +85,6 @@ class Player:
 
     def check_squeeze(self, map):
         # extend by 4
-        orig_pos, orig_size = self.pos[:], self.size[:]
         self.compressed_size = self.squeeze(
             self.pos, self.size, self.compressed_size, -4 if self.compressed_size > 4 else -self.compressed_size, 'high'
         )
@@ -89,8 +92,9 @@ class Player:
         for obs in map.objects['obstacle'] + map.objects['elevator']:
             if not utils.overlap(self.get_rect(), obs.get_rect()):
                 continue
-            orig_rect = [orig_pos, [orig_pos[0] + self.size[0], orig_pos[1] + self.size[1]]]
-            rel_pos = utils.direction(orig_rect, obs.get_orig_rect(), 1)
+            rel_pos = self.directions[obs][1]
+            if rel_pos is None:
+                continue
             diff = (self.pos[1] + self.size[1]) - obs.pos[1] if rel_pos == 'low' else (obs.pos[1] + obs.size[1]) - self.pos[1]
             self.compressed_size = self.squeeze(self.pos, self.size, self.compressed_size, diff, rel_pos)
 
@@ -113,6 +117,8 @@ class Player:
                utils.overlap(self.create_rect(pos1, pos2), obj.get_rect())
 
     def move(self, map):
+        # get relative positions
+        self.get_rel_pos(map)
         # move horizontally
         self.pos = self.check_obstacles(map, self.speed[0], 0)
         # move vertically
