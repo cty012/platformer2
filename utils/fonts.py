@@ -4,7 +4,7 @@ def get_font(font_name, font_size):
 
 # times new roman
 def tnr(font_size):
-    return 'src', 'timesnewroman.ttf', font_size
+    return 'src', 'merriweather.ttf', font_size
 
 
 # cambria
