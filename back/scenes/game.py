@@ -17,7 +17,7 @@ class Scene:
             import back.sprites.game_client as g
         else:
             import back.sprites.game as g
-        with open(os.path.join('levels', f'{self.mode["level"]}.json')) as file:
+        with open(os.path.join(self.args.path, 'levels', f'{self.mode["level"]}.json')) as file:
             self.game = g.Game(self.args, self.mode, json.load(file))
         # others
         self.game_menu = gm.GameMenu((self.args.size[0] // 2, self.args.size[1] // 2), align=(1, 1))
