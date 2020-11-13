@@ -51,6 +51,7 @@
                     "close": [
                         ["state", "open"],
                         ["color", [62, 195, 128]],
+                        ["remove", "o1-2-0-left"],
                         ["if", ["object", "e1-1", "pos", "[1670, 4200]"], [
                             ["object", "e1-1", "speed", "[0, -2]"],
                             ["object", "e1-1", "update_speed", "False"]
@@ -121,7 +122,7 @@
             },
             {
                 "name": "s-epsilon",
-                "pos": [755, 1500],
+                "pos": [755, 1550],
                 "size": [30, 30],
                 "color": [102, 255, 178],
                 "command": {
@@ -129,6 +130,48 @@
                         ["state", "open"],
                         ["color", [62, 195, 128]],
                         ["remove", "o-block-2"]
+                    ],
+                    "open": [
+                        ["state", "open"]
+                    ]
+                },
+                "update": ["color"]
+            },
+            {
+                "name": "s-zeta",
+                "pos": [2305, 655],
+                "size": [30, 30],
+                "color": [102, 255, 178],
+                "command": {
+                    "close": [
+                        ["state", "open"],
+                        ["color", [62, 195, 128]],
+                        ["if", ["object", "e4-0", "pos", "[2080, 2370]"], [
+                            ["object", "e4-0", "pos", "[2080, 2410]"],
+                            ["object", "e4-0", "speed", "[0, -70]"],
+                            ["object", "e4-0", "update_speed", "False"]
+                        ]]
+                    ],
+                    "open": [
+                        ["state", "open"]
+                    ],
+                    "auto": [
+                        ["state", "close"],
+                        ["color", [102, 255, 178]]
+                    ]
+                },
+                "update": ["color"]
+            },
+            {
+                "name": "s-hidden",
+                "pos": [65, 3285],
+                "size": [30, 30],
+                "color": [102, 255, 178],
+                "command": {
+                    "close": [
+                        ["state", "open"],
+                        ["color", [62, 195, 128]],
+                        ["remove", "o-block-3"]
                     ],
                     "open": [
                         ["state", "open"]
@@ -476,30 +519,6 @@
                 "size": [40, 60],
                 "color": [50, 205, 50],
                 "update": ["pos"]
-            },
-            {
-                "name": "m4-1",
-                "track": [
-                    {
-                        "pos": [2980, 4020],
-                        "speed": [-6, 0]
-                    },
-                    {
-                        "pos": [2380, 4020],
-                        "speed": [0, -6]
-                    },
-                    {
-                        "pos": [2380, 3720],
-                        "speed": [6, 0]
-                    },
-                    {
-                        "pos": [2980, 3720],
-                        "speed": [0, 6]
-                    }
-                ],
-                "size": [40, 60],
-                "color": [50, 205, 50],
-                "update": ["pos"]
             }
         ],
         "elevator" : [
@@ -571,16 +590,16 @@
                 "name": "e4-0",
                 "track": [
                     {
-                        "pos": [2080, 2300],
+                        "pos": [2080, 2370],
                         "speed": [0, 0]
                     },
                     {
-                        "pos": [2000, 3100],
-                        "speed": [1, 0]
+                        "pos": [2080, 2340],
+                        "speed": [0, 1]
                     }
                 ],
-                "size": [150, 30],
-                "color": [0, 0, 128],
+                "size": [120, 30],
+                "color": [0, 110, 180],
                 "update": ["pos"]
             }
         ],
@@ -709,9 +728,15 @@
                 "color": [0, 0, 128]
             },
             {
-                "name": "o1-2-0",
-                "pos": [50, 3650],
-                "size": [700, 80],
+                "name": "o1-2-0-left",
+                "pos": [50, 3648],
+                "size": [150, 80],
+                "color": [0, 0, 128]
+            },
+            {
+                "name": "o1-2-0-right",
+                "pos": [200, 3650],
+                "size": [550, 80],
                 "color": [0, 0, 128]
             },
             {

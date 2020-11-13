@@ -1,3 +1,4 @@
+import random
 import re
 
 
@@ -21,6 +22,10 @@ def direction(rect1, rect2, direct):
 
 def is_rect(rect):
     return rect[0][0] < rect[1][0] and rect[0][1] < rect[1][1]
+
+
+def random_color():
+    return [random.randint(0, 255) for _ in range(3)]
 
 
 def is_ip(ip):
