@@ -27,6 +27,7 @@ class Button:
     def show(self, ui):
         if self.background is not None:
             ui.show_div(self.pos, self.size, border=0, color=self.background)
-        ui.show_div(self.pos, self.size, border=self.border, color=self.color[0])
+        if self.color[0] is not None and self.border > 0:
+            ui.show_div(self.pos, self.size, border=self.border, color=self.color[0])
         center = self.pos[0] + self.size[0] // 2, self.pos[1] + self.size[1] // 2
         ui.show_text(center, self.text, self.font, color=self.color[1], align=(1, 1))

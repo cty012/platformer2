@@ -1,5 +1,6 @@
 import back.sprites.component as c
 import utils.fonts as f
+from utils import settings
 
 
 class Scene:
@@ -19,6 +20,11 @@ class Scene:
                 (self.args.size[0] // 2, 560), (600, 80), 'Exit',
                 font=f.tnr(25), align=(1, 1), background=(210, 210, 210)
             ),
+            'reload_settings': c.Button(
+                (self.args.size[0] - 3, self.args.size[1] - 3), (200, 30), 'Reload settings'.upper(),
+                font=f.get_font('04b_03b', 20), align=(2, 2),
+                color=(None, (255, 255, 255)), background=(235, 180, 35), border=1
+            )
         }
 
     def process_events(self, events):
@@ -37,6 +43,8 @@ class Scene:
             return ['save']
         elif name == 'quit':
             return ['quit']
+        elif name == 'reload_settings':
+            settings.load()
         return [None]
 
     def show(self, ui):
