@@ -731,7 +731,8 @@
                 "name": "o1-2-0-left",
                 "pos": [50, 3648],
                 "size": [150, 80],
-                "color": [0, 0, 128]
+                "color": [0, 0, 128],
+                "update": ["name"]
             },
             {
                 "name": "o1-2-0-right",
