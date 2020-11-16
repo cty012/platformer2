@@ -8,6 +8,7 @@ import back.sprites.modules.player as p
 import back.sprites.modules.score_display as sd
 import utils.fonts as f
 from utils.parser import Parser
+from utils import settings
 
 
 class Game:
@@ -54,11 +55,14 @@ class Game:
 # EVENTS #
 ########################################################################################################################
     def process_events(self, events):
-        for object_type in ['elevator', 'monster']:
-            for obj in self.map.objects[object_type]:
-                obj.move()
-        self.my_player.process_pressed(events['key-pressed'], events['key-down'])
-        self.my_player.move(self.map)
+        # Optional animation lag-smoothing
+        if settings.get('animation_lag_smoothing'):
+            for object_type in ['elevator', 'monster']:
+                for obj in self.map.objects[object_type]:
+                    obj.move()
+            self.my_player.process_pressed(events['key-pressed'], events['key-down'])
+            self.my_player.move(self.map)
+        # ALWAYS remember to refresh panning
         self.refresh_pan()
         # send data
         if self.connected['connected']:
