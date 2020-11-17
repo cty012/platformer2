@@ -1,5 +1,6 @@
 import json
 import socket
+import time
 from threading import Thread
 
 import back.sprites.modules.clock as c
@@ -36,7 +37,7 @@ class Game:
         self.time = '00:00:00'
         self.clock = c.Clock((120, 90))
         self.score_display = sd.ScoreDisplay((70, 150))
-        self.pingstamp = 0
+        self.pingstamp = time.perf_counter_ns()
         self.pingdelta = 0
 
 ########################################################################################################################
@@ -176,19 +177,19 @@ class Game:
             )
         # Show ping
         ui.show_text(
-            (self.args.size[0] - 10, 10), f"Ping: {self.pingdelta}",
+            (self.args.size[0] - 10, 10), f"Latency: {round(self.pingdelta/1e6):6d} ms",
             font=f.get_font('courier-prime', 20), color=self.__class__.get_ping_color(self.pingdelta), align=(2, 0)
         )
 
 ########################################################################################################################
 # PING #
 ########################################################################################################################
-    def ping_incr(self, by=1):
+    def ping_incr(self):
         p = self.pingstamp
-        self.pingstamp += by
+        self.pingstamp = time.perf_counter_ns()
         return p
-    def incr_ping(self, by=1):
-        self.pingstamp += by
+    def incr_ping(self):
+        self.pingstamp = time.perf_counter_ns()
         return self.pingstamp
 
     @classmethod
