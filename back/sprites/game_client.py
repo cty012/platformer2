@@ -1,6 +1,7 @@
 import json
 import socket
 import time
+import math
 from threading import Thread
 
 import back.sprites.modules.clock as c
@@ -32,6 +33,7 @@ class Game:
         # ping
         self.pingstamp = time.perf_counter_ns()
         self.svr_pingstamp = self.pingstamp
+        self.latency_recents = []
         # thread
         self.thread_recv = None
         self.connected = {'connected': True}
@@ -180,7 +182,7 @@ class Game:
             )
         # Show ping
         ui.show_text(
-            (self.args.size[0] - 10, 10), f"Latency: {round(self.pingdelta/1e6):6d} ms",
+            (self.args.size[0] - 10, 10), "|{: >{:d}s} ".format('#'*round(math.log(self.pingdelta/1e6+1, 2)), round(math.log(self.recent_max_ping()/1e6+1, 2))) + f"Latency{round(self.pingdelta/1e6):6d} ms",
             font=f.get_font('courier-prime', 20), color=self.__class__.get_ping_color(self.pingdelta/1e6), align=(2, 0)
         )
 
@@ -197,7 +199,15 @@ class Game:
 
     @property
     def pingdelta(self):
-        return self.pingstamp - self.svr_pingstamp
+        delta = self.pingstamp - self.svr_pingstamp
+        return delta
+
+    def recent_max_ping(self):
+        delta = self.pingstamp - self.svr_pingstamp
+        t = time.perf_counter_ns()
+        self.latency_recents.append((t, delta))
+        self.latency_recents = [a for a in self.latency_recents if a[0] + 1e9 >= t]
+        return max(a[1] for a in self.latency_recents)
 
     @classmethod
     def get_ping_color(cls, ping):
