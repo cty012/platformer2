@@ -16,8 +16,11 @@ class Scene:
         # server and client
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        _hostname = socket.getfqdn()
+        if not _hostname.endswith('.local'):
+            _hostname += '.local'
         ips = [
-            ip for ip in socket.gethostbyname_ex(socket.getfqdn())[2]
+            ip for ip in socket.gethostbyname_ex(_hostname)[2]
             if utils.is_private_ip(ip)
         ]
         self.ip = ips[0] if len(ips) > 0 else '127.0.0.1'
