@@ -26,10 +26,14 @@ class Game:
         self.target_pan = None
         self.pan = None
         self.alpha = None
+        # ping
+        if self.mode['mode'] == 'mult':
+            self.pingstamp = [0] * (len(self.mode['connect']['clients']) + 1)
+        else:
+            self.pingstamp = [0]  # failsafe
         # thread
         self.thread_recv = []
         self.connected = {'connected': True}
-        self.pingstamp = [0] * (len(self.mode['connect']['clients']) + 1)  # XXX Initialize ping history storage
         self.prepare()
         # others
         self.clock = c.Clock((120, 90))
