@@ -17,7 +17,7 @@ class Scene:
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         ips = [
-            ip for ip in socket.gethostbyname_ex(socket.gethostname())[2]
+            ip for ip in socket.gethostbyname_ex(socket.getfqdn())[2]
             if utils.is_private_ip(ip)
         ]
         self.ip = ips[0] if len(ips) > 0 else '127.0.0.1'
