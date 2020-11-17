@@ -104,8 +104,7 @@ class Game:
                     self.paused = not self.paused
                 # close socket
                 elif msg == 'close':
-                    self.connected['connected'] = False
-                    self.win = 'draw'
+                    self.connected['connected'] = Falsejhmbjmjm
                 # update status
                 elif msg.startswith('time'):
                     self.time = msg[4:]

@@ -96,6 +96,7 @@ class Game:
             self.send(json.dumps(self.get_status()))
             self.send('time' + self.clock.stopwatch.get_str_time())
         if self.win is not None:
+            self.close_client_sockets()
             self.connected['connected'] = False
 
     def send(self, msg):
@@ -154,24 +155,20 @@ class Game:
             for target in self.map.objects['target']:
                 if player.collide_with(target):
                     self.win = True
-                    self.close_client_sockets()
                     return
         for player in self.players:
             # squeezed to zero -> LOSE
             if player.size[0] * player.size[1] == 0:
                 self.win = False
-                self.close_client_sockets()
                 return
             # fall -> LOSE
             if player.pos[1] > self.map.size[1] + 300:
                 self.win = False
-                self.close_client_sockets()
                 return
             # touch monster -> LOSE
             for monster in self.map.objects['monster']:
                 if player.collide_with(monster):
                     self.win = False
-                    self.close_client_sockets()
                     return
 
     def close_client_sockets(self):
