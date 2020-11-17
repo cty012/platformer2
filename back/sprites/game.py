@@ -1,5 +1,6 @@
 import json
 import socket
+import sys
 from threading import Thread
 
 import back.sprites.modules.clock as c
@@ -28,12 +29,12 @@ class Game:
         # thread
         self.thread_recv = []
         self.connected = {'connected': True}
+        self.pingstamp = [0] * (len(self.mode['connect']['clients']) + 1)  # XXX Initialize ping history storage
         self.prepare()
         # others
         self.clock = c.Clock((120, 90))
         self.clock.stopwatch.start()
         self.score_display = sd.ScoreDisplay((70, 150))
-        self.pingstamp = {}  # XXX Record ping
 
 ########################################################################################################################
 # PREPARATION #
@@ -48,7 +49,6 @@ class Game:
         self.target_pan = self.get_target_pan()
         self.pan = self.target_pan
         self.alpha = 10
-        self.pingstamp = [0 for clid in range(len(self.players))]  # XXX Initialize ping count
         # thread
         if self.mode['mode'] == 'mult':
             for i in range(len(self.mode['connect']['clients'])):
