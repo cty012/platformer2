@@ -29,6 +29,9 @@ class Game:
         self.target_pan = None
         self.pan = None
         self.alpha = None
+        # ping
+        self.pingstamp = time.perf_counter_ns()
+        self.pingdelta = 0
         # thread
         self.thread_recv = None
         self.connected = {'connected': True}
@@ -37,8 +40,6 @@ class Game:
         self.time = '00:00:00'
         self.clock = c.Clock((120, 90))
         self.score_display = sd.ScoreDisplay((70, 150))
-        self.pingstamp = time.perf_counter_ns()
-        self.pingdelta = 0
 
 ########################################################################################################################
 # PREPARATION #
@@ -178,7 +179,7 @@ class Game:
         # Show ping
         ui.show_text(
             (self.args.size[0] - 10, 10), f"Latency: {round(self.pingdelta/1e6):6d} ms",
-            font=f.get_font('courier-prime', 20), color=self.__class__.get_ping_color(self.pingdelta), align=(2, 0)
+            font=f.get_font('courier-prime', 20), color=self.__class__.get_ping_color(self.pingdelta/1e6), align=(2, 0)
         )
 
 ########################################################################################################################
