@@ -33,6 +33,7 @@ class Game:
         self.clock = c.Clock((120, 90))
         self.clock.stopwatch.start()
         self.score_display = sd.ScoreDisplay((70, 150))
+        self.pingstamp = {}  # XXX Record ping
 
 ########################################################################################################################
 # PREPARATION #
@@ -47,6 +48,7 @@ class Game:
         self.target_pan = self.get_target_pan()
         self.pan = self.target_pan
         self.alpha = 10
+        self.pingstamp = [0 for clid in range(len(self.players))]  # XXX Initialize ping count
         # thread
         if self.mode['mode'] == 'mult':
             for i in range(len(self.mode['connect']['clients'])):
@@ -96,8 +98,8 @@ class Game:
         try:
             for client in self.mode['connect']['clients']:
                 msg_b = bytes(msg, encoding='utf-8')
-                client['socket'].send(bytes(f'{len(msg_b):10}', encoding='utf-8'))
-                client['socket'].send(msg_b)
+                client['socket'].sendall(bytes(f'{len(msg_b):10}', encoding='utf-8'))
+                client['socket'].sendall(msg_b)
         except OSError as e:
             print(e)
 
@@ -117,6 +119,7 @@ class Game:
                 for events_str in events_strs:
                     events = json.loads(events_str)
                     self.players[i + 1].process_pressed(events['key-pressed'], events['key-down'])
+                    self.pingstamp[i + 1] = max(self.pingstamp[i + 1], events['ping'])
             print(f'SERVER END receiving FROM C{i}...')
         return func
 
@@ -186,7 +189,8 @@ class Game:
             'win': self.win,
             'score': self.score,
             'map': self.map.get_status(),
-            'players': [player.get_status() for player in self.players]
+            'players': [player.get_status() for player in self.players],
+            'pings': self.pingstamp
         }
 
     def show(self, ui):

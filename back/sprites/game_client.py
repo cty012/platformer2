@@ -36,6 +36,8 @@ class Game:
         self.time = '00:00:00'
         self.clock = c.Clock((120, 90))
         self.score_display = sd.ScoreDisplay((70, 150))
+        self.pingstamp = 0
+        self.pingdelta = 0
 
 ########################################################################################################################
 # PREPARATION #
@@ -71,7 +73,7 @@ class Game:
     def send(self, events):
         try:
             operations = bytes(
-                json.dumps({'key-pressed': events['key-pressed'], 'key-down': events['key-down']}),
+                json.dumps({'key-pressed': events['key-pressed'], 'key-down': events['key-down'], 'ping': self.incr_ping()}),
                 encoding='utf-8'
             )
             self.mode['connect']['socket'].send(bytes(f'{len(operations):10}', encoding='utf-8'))
@@ -147,6 +149,8 @@ class Game:
             print()
             self.connected['connected'] = False
 
+        self.pingdelta = self.pingstamp - status['pings'][self.mode['connect']['id']]
+
     def show(self, ui):
         # show map
         self.map.show(ui, pan=self.pan)
@@ -170,3 +174,25 @@ class Game:
                 (self.args.size[0] // 2, self.args.size[1] // 2), 'SERVER PAUSED',
                 font=f.cambria(30), color=(0, 0, 0), align=(1, 1)
             )
+        # Show ping
+        ui.show_text(
+            (self.args.size[0] - 10, 10), f"Ping: {self.pingdelta}",
+            font=f.get_font('courier-prime', 20), color=self.__class__.get_ping_color(self.pingdelta), align=(2, 0)
+        )
+
+########################################################################################################################
+# PING #
+########################################################################################################################
+    def ping_incr(self, by=1):
+        p = self.pingstamp
+        self.pingstamp += by
+        return p
+    def incr_ping(self, by=1):
+        self.pingstamp += by
+        return self.pingstamp
+
+    @classmethod
+    def get_ping_color(cls, ping):
+        if ping < settings.get('lag_ping_threshold'):
+            return (255, 255, 255)
+        return (255, 100, 100)
