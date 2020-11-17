@@ -31,7 +31,7 @@ class Game:
         self.alpha = None
         # ping
         self.pingstamp = time.perf_counter_ns()
-        self.pingdelta = 0
+        self.svr_pingstamp = self.pingstamp
         # thread
         self.thread_recv = None
         self.connected = {'connected': True}
@@ -60,7 +60,9 @@ class Game:
 ########################################################################################################################
     def process_events(self, events):
         # Optional animation lag-smoothing
-        if settings.get('animation_lag_smoothing'):
+        _flag_smoothing = settings.get('animation_lag_smoothing')
+        _ping_threshold = settings.get('lag_ping_threshold')
+        if _flag_smoothing is True or (_flag_smoothing == 'auto' and self.pingdelta/1e6 < _ping_threshold):
             for object_type in ['elevator', 'monster']:
                 for obj in self.map.objects[object_type]:
                     obj.move()
@@ -151,7 +153,7 @@ class Game:
             print()
             self.connected['connected'] = False
 
-        self.pingdelta = self.pingstamp - status['pings'][self.mode['connect']['id']]
+        self.svr_pingstamp = status['pings'][self.mode['connect']['id']]
 
     def show(self, ui):
         # show map
@@ -192,6 +194,10 @@ class Game:
     def incr_ping(self):
         self.pingstamp = time.perf_counter_ns()
         return self.pingstamp
+
+    @property
+    def pingdelta(self):
+        return self.pingstamp - self.svr_pingstamp
 
     @classmethod
     def get_ping_color(cls, ping):

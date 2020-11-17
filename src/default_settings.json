@@ -1,4 +1,4 @@
 {
-    "animation_lag_smoothing": true,
+    "animation_lag_smoothing": "auto",
     "lag_ping_threshold": 200
 }
