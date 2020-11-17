@@ -7,7 +7,7 @@ class Player:
         # basic info
         self.id = id
         self.id_img = None
-        self.pos = player_info['pos'][:]
+        self.pos = player_info['pos'][0 if self.id is None else (self.id % len(player_info['pos']))][:]
         self.size = player_info['size'][:]
         self.color = player_info['color'][:]
         self.squeezable = squeezable
