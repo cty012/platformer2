@@ -21,9 +21,9 @@ class Scene:
                 font=f.tnr(25), align=(1, 1), background=(210, 210, 210)
             ),
             'reload_settings': c.Button(
-                (self.args.size[0] - 3, self.args.size[1] - 3), (200, 30), 'Reload settings'.upper(),
-                font=f.get_font('04b_03b', 20), align=(2, 2),
-                color=(None, (255, 255, 255)), background=(235, 180, 35), border=1
+                (self.args.size[0] - 3, self.args.size[1] - 3), (280, 30), '>> Reload settings <<',
+                font=f.get_font('courier-prime', 20), align=(2, 2),
+                color=(None, (255, 255, 255)), background=None, border=1
             )
         }
 
