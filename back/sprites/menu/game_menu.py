@@ -38,7 +38,9 @@ class GameMenu:
         ui.show_div(pos, self.size, color=(192, 192, 192))
         ui.show_div(pos, self.size, border=2)
         # round
-        ui.show_text((self.size[0] // 2, 40), f'PAUSED', f.cambria(28), align=(1, 0), pan=pos)
+        ui.show_text(
+            (self.size[0] // 2, 40), f'PAUSED', f.cambria(28), save='cambria-28', align=(1, 0), pan=pos
+        )
         # buttons
         for name in self.buttons:
             self.buttons[name].show(ui)

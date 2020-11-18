@@ -6,6 +6,7 @@ class Font:
     def __init__(self, args):
         self.args = args
         self.root = os.path.join(self.args.path, 'src', 'fonts')
+        self.text_imgs = {}
 
     def render_font(self, font):
         if font[0] == 'ttf':
@@ -17,3 +18,13 @@ class Font:
 
     def get(self, file):
         return os.path.join(self.root, file)
+
+    def load(self, save, msg):
+        if save in self.text_imgs.keys() and msg in self.text_imgs[save].keys():
+            return self.text_imgs[save][msg]
+        return None
+
+    def save(self, save, msg, img):
+        if save not in self.text_imgs.keys():
+            self.text_imgs[save] = {}
+        self.text_imgs[save][msg] = img

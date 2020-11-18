@@ -43,11 +43,27 @@ class UI:
         rect = [utils.top_left(pos, size, align=align), size]
         pygame.draw.rect(self.screen, color, rect, border)
 
-    def show_text(self, pos, text, font, *, color=(0, 0, 0), background=None, align=(0, 0), pan=(0, 0)):
-        pos = (pos[0] + pan[0], pos[1] + pan[1])
-        text_img = self.font.render_font(font).render(text, True, color, background)
-        size = text_img.get_size()
-        self.screen.blit(text_img, utils.top_left(pos, size, align=align))
+    def show_text(self, pos, text, font, *, color=(0, 0, 0), background=None, save=None, align=(0, 0), pan=(0, 0)):
+        if save is None:
+            pos = (pos[0] + pan[0], pos[1] + pan[1])
+            text_img = self.font.render_font(font).render(text, True, color, background)
+            size = text_img.get_size()
+            self.screen.blit(text_img, utils.top_left(pos, size, align=align))
+            return
+        text_imgs = []
+        for char in text:
+            char_img = self.font.load(save, char)
+            if char_img is None:
+                char_img = self.font.render_font(font).render(char, True, color, background)
+                self.font.save(save, char, char_img)
+            text_imgs.append(char_img)
+        total_size = sum([text_img.get_size()[0] for text_img in text_imgs]), \
+               max([text_img.get_size()[1] for text_img in text_imgs])
+        pos = utils.top_left(pos, total_size, align=align)
+        x, y = pos[0], pos[1] + total_size[1] // 2
+        for text_img in text_imgs:
+            self.show_img((x, y), text_img, align=(0, 1), pan=pan)
+            x += text_img.get_size()[0]
 
     def show_texts(self, pos, texts, font, *, align=(0, 0), pan=(0, 0)):
         pos = (pos[0] + pan[0], pos[1] + pan[1])

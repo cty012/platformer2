@@ -34,7 +34,7 @@ class Scene:
         elif self.game_menu.active:
             return self.execute(self.game_menu.process_events(events))
         # pause game
-        elif 'escape' in events['key-down'] and not self.is_client():
+        elif 'escape' in events['key-down']:
             return self.execute('continue')
         # play game
         return self.execute(self.game.process_events(events))

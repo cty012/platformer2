@@ -177,12 +177,19 @@ class Game:
             )
             ui.show_text(
                 (self.args.size[0] // 2, self.args.size[1] // 2), 'SERVER PAUSED',
-                font=f.cambria(30), color=(0, 0, 0), align=(1, 1)
+                font=f.cambria(30), color=(0, 0, 0), save='cambria-30', align=(1, 1)
             )
         # Show ping
         ui.show_text(
-            (self.args.size[0] - 10, 10), "|{: >{:d}s} ".format('#'*round(math.log(self.pingdelta/1e6+1, 2)), round(math.log(self.recent_max_ping()/1e6+1, 2))) + f"Latency{round(self.pingdelta/1e6):6d} ms",
-            font=f.get_font('courier-prime', 20), color=self.__class__.get_ping_color(self.pingdelta/1e6), align=(2, 0)
+            (self.args.size[0] - 10, 10),
+            "|{: >{:d}s} ".format(
+                '#' * round(math.log(self.pingdelta/1e6+1, 2)),
+                round(math.log(self.recent_max_ping()/1e6+1, 2))
+            ) + f"Latency{round(self.pingdelta/1e6):6d} ms",
+            font=f.get_font('courier-prime', 20),
+            color=self.__class__.get_ping_color(self.pingdelta/1e6),
+            save='ping-text',
+            align=(2, 0)
         )
 
 ########################################################################################################################
@@ -192,6 +199,7 @@ class Game:
         p = self.pingstamp
         self.pingstamp = time.perf_counter_ns()
         return p
+
     def incr_ping(self):
         self.pingstamp = time.perf_counter_ns()
         return self.pingstamp
@@ -211,5 +219,5 @@ class Game:
     @classmethod
     def get_ping_color(cls, ping):
         if ping < settings.get('lag_ping_threshold'):
-            return (255, 255, 255)
-        return (255, 100, 100)
+            return 255, 255, 255
+        return 255, 100, 100

@@ -1,6 +1,5 @@
 import json
 import socket
-import sys
 from threading import Thread
 
 import back.sprites.modules.clock as c
@@ -121,6 +120,9 @@ class Game:
                 except json.decoder.JSONDecodeError:
                     print('\tJSON Decode Error!')
                     continue
+                except ConnectionResetError:
+                    print('Connection Reset by CLIENT')
+                    break
                 for events_str in events_strs:
                     events = json.loads(events_str)
                     self.players[i + 1].process_pressed(events['key-pressed'], events['key-down'])

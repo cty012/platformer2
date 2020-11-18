@@ -27,6 +27,9 @@ class Map:
     def init_objects(self):
         MapLoader.load(self, self.map_info)
 
+    def get_rect(self):
+        return [self.pos, [self.pos[0] + self.size[0], self.pos[1] + self.size[1]]]
+
     def in_range(self, pos):
         return self.pos[0] < pos[0] < self.pos[0] + self.size[0] and \
                self.pos[1] < pos[1] < self.pos[1] + self.size[1]
@@ -74,9 +77,11 @@ class Map:
                 pos = desc['pos'][0], desc['pos'][1] + i * desc['font'][1] * 2
                 ui.show_text(
                     pos, text, f.get_font(desc['font'][0], desc['font'][1]),
-                    color=desc['color'], pan=pan
+                    color=desc['color'], save=str(desc['font']) + '-' + str(desc['color']), pan=pan
                 )
         for obj in self.get_objects():
+            if not utils.overlap(self.get_rect(), obj.get_rect(pan=pan)):
+                continue
             obj.show(ui, pan=pan)
 
 

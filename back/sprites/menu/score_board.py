@@ -39,10 +39,12 @@ class ScoreBoard:
         ui.show_div(pos, self.size, border=2)
         # round
         ui.show_text(
-            (self.size[0] // 2, 40), f'YOU  {"WIN" if win else "LOSE"}!', f.cambria(28), align=(1, 0), pan=pos
+            (self.size[0] // 2, 40), f'YOU  {"WIN" if win else "LOSE"}!',
+            f.cambria(28), save='cambria-28', align=(1, 0), pan=pos
         )
         ui.show_text(
-            (self.size[0] // 2, 80), f'Score: {score}', f.cambria(25), align=(1, 0), pan=pos
+            (self.size[0] // 2, 80), f'Score: {score}',
+            f.cambria(25), save='cambria-25', align=(1, 0), pan=pos
         )
         # buttons
         for name in self.buttons:
