@@ -8,15 +8,14 @@ class Stopwatch:
         self.speed = 1
         self.interval = start_time
 
-    def start(self, speed=1):
+    def start(self, speed=None):
+        if self.start_time is not None and self.end_time is not None:
+            self.interval += self.speed * (self.end_time - self.start_time)
+            self.start_time = self.end_time = None
         if self.start_time is None:
             self.start_time = time.time()
-            self.speed = speed
-        elif self.start_time is not None and self.end_time is not None:
-            self.interval += self.speed * (self.end_time - self.start_time)
-            self.start_time = time.time()
-            self.speed = speed
-            self.end_time = None
+            if speed is not None:
+                self.speed = speed
 
     def set_speed(self, speed):
         if self.start_time is not None and self.end_time is not None:
@@ -28,25 +27,27 @@ class Stopwatch:
         self.speed = speed
 
     def stop(self):
-        if self.start_time is not None:
-            self.end_time = time.time()
+        if self.start_time is None:
+            return
+        self.end_time = time.time()
 
     def is_running(self):
         return self.start_time is not None and self.end_time is None
 
     def get_time(self):
+        """return the passed time in seconds"""
         if self.start_time is None:
-            return 0
-        if self.end_time is not None:
-            return self.speed * (self.end_time - self.start_time) + self.interval
+            return self.interval
         elif self.end_time is None:
             return self.speed * (time.time() - self.start_time) + self.interval
+        return self.speed * (self.end_time - self.start_time) + self.interval
 
     def get_str_time(self):
-        millis = self.get_time()
-        minutes = int(millis) // 60
-        seconds = int(millis) - minutes * 60
-        decimals = int((millis - int(millis)) * 100)
+        """MINUTE:SECOND:1/100SECOND"""
+        time_in_seconds = self.get_time()
+        minutes = int(time_in_seconds) // 60
+        seconds = int(time_in_seconds) - minutes * 60
+        decimals = int((time_in_seconds - int(time_in_seconds)) * 100)
         return f'{minutes:02}:{seconds:02}:{decimals:02}'
 
     def clear(self):
