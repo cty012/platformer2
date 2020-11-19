@@ -1,6 +1,6 @@
 {
     "player": {
-        "pos": [[40, 590]],
+        "pos": [[100, 590]],
         "size": [40, 60],
         "color": [255, 0, 0]
     },
@@ -14,38 +14,109 @@
                 "color": [240, 230, 140]
             }
         ],
-        "coin" : [
+        "coin": [
+            {
+                "name": "c0",
+                "pos": [1900, 615],
+                "size": [10, 10],
+                "color": [255, 215, 0],
+                "update": ["name"]
+            },
+            {
+                "name": "c1",
+                "pos": [2000, 615],
+                "size": [10, 10],
+                "color": [255, 215, 0],
+                "update": ["name"]
+            },
+            {
+                "name": "c2",
+                "pos": [2100, 615],
+                "size": [10, 10],
+                "color": [255, 215, 0],
+                "update": ["name"]
+            }
         ],
         "switch": [
             {
-                "name": "sac",
-                "pos": [900, 600],
-                "size": [30, 30],
+                "name": "s0",
+                "pos": [310, 620],
+                "size": [10, 30],
                 "color": [102, 255, 178],
                 "command": {
                     "close": [
                         ["state", "open"],
                         ["color", [62, 195, 128]],
-                        ["remove", "finalblock"]
+                        ["if", ["object", "e-jump", "pos", "[295, 640]"], [
+                            ["object", "e-jump", "pos", "[295, 660]"],
+                            ["object", "e-jump", "speed", "[0, -50]"],
+                            ["object", "e-jump", "update_speed", "False"]
+                        ]]
                     ],
                     "open": [
                         ["state", "open"]
+                    ],
+                    "auto": [
+                        ["state", "close"],
+                        ["color", [102, 255, 178]]
                     ]
                 },
                 "update": ["color"]
             }
         ],
-        "monster": [         
+        "monster": [
         ],
         "elevator" : [
+            {
+                "name": "e0",
+                "track": [
+                    {
+                        "pos": [1210, 560],
+                        "speed": [1, 0]
+                    },
+                    {
+                        "pos": [1500, 560],
+                        "speed": [-1, 0]
+                    }
+                ],
+                "size": [200, 40],
+                "color": [0, 0, 128],
+                "update": ["pos"]
+            },
+            {
+                "name": "e1",
+                "track": [
+                    {
+                        "pos": [95, 36625],
+                        "speed": [0, -100]
+                    },
+                    {
+                        "pos": [95, 625],
+                        "speed": [0, 0]
+                    }
+                ],
+                "size": [50, 25],
+                "color": [30, 160, 240],
+                "update": ["pos"]
+            },
+            {
+                "name": "e-jump",
+                "track": [
+                    {
+                        "pos": [295, 640],
+                        "speed": [0, 0]
+                    },
+                    {
+                        "pos": [295, 610],
+                        "speed": [0, 1]
+                    }
+                ],
+                "size": [40, 10],
+                "color": [30, 160, 240],
+                "update": ["pos"]
+            }
         ],
         "obstacle": [
-            {
-                "name":"stair1",
-                "pos":[700, 450],
-                "size":[50, 200],
-                "color":[0,0,128]
-            },
             {
                 "name": "o-ground",
                 "pos": [0, 650],
@@ -53,22 +124,59 @@
                 "color": [0, 0, 128]
             },
             {
-                "name":"wall1",
-                "pos":[800, 100],
-                "size":[50, 550],
-                "color":[0,0,128]
+                "name": "o-e1-vfx",
+                "pos": [90, 650],
+                "size": [60, 15],
+                "color": [20, 150, 230]
             },
             {
-                "name":"wall2",
-                "pos":[1000, 100],
-                "size":[50, 550],
-                "color":[0,0,128]
+                "name": "o-jump",
+                "pos": [600, 550],
+                "size": [250, 100],
+                "color": [0, 0, 128]
             },
             {
-                "name":"finalblock",
-                "pos":[1500, 0],
-                "size":[50, 650],
-                "color":[0,0,128]
+                "name": "o-jump2",
+                "pos": [850, 600],
+                "size": [100, 50],
+                "color": [0, 0, 128]
+            }
+        ],
+        "description": [
+            {
+                "name": "d-move",
+                "pos": [50, 400],
+                "text": ["PRESS A AND D TO MOVE", "BACKWARD AND FORWARD"],
+                "font": ["uasquared", 20],
+                "color": [128, 128, 128]
+            },
+            {
+                "name": "d-jump",
+                "pos": [500, 400],
+                "text": ["PRESS W TO JUMP"],
+                "font": ["uasquared", 20],
+                "color": [128, 128, 128]
+            },
+            {
+                "name": "d-monster",
+                "pos": [1200, 400],
+                "text": ["BEWARE OF THE MONSTER ON PATROL"],
+                "font": ["uasquared", 20],
+                "color": [128, 128, 128]
+            },
+            {
+                "name": "d-coin",
+                "pos": [1870, 400],
+                "text": ["WALK TO COLLECT THE COINS"],
+                "font": ["uasquared", 20],
+                "color": [128, 128, 128]
+            },
+            {
+                "name": "d-target",
+                "pos": [2600, 270],
+                "text": ["REACH THE TARGET", "TO WIN THE GAME"],
+                "font": ["uasquared", 20],
+                "color": [128, 128, 128]
             }
         ]
     }
