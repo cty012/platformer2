@@ -180,14 +180,16 @@ class Game:
                 font=f.cambria(30), color=(0, 0, 0), save='cambria-30', align=(1, 1)
             )
         # Show ping
+        pdelta_ms = self.pingdelta/1e6
+        rmaxping_ms = self.recent_max_ping()/1e6
         ui.show_text(
             (self.args.size[0] - 10, 10),
             "|{: >{:d}s} ".format(
-                '#' * round(math.log(self.pingdelta/1e6+1, 2)),
-                round(math.log(self.recent_max_ping()/1e6+1, 2))
-            ) + f"Latency{round(self.pingdelta/1e6):6d} ms",
+                '#' * round(math.log(pdelta_ms+1, 2)),
+                round(math.log(rmaxping_ms+1, 2))
+            ) + f"Latency{round(pdelta_ms):6d} ms",
             font=f.get_font('courier-prime', 20),
-            color=self.__class__.get_ping_color(self.pingdelta/1e6),
+            color=self.__class__.get_ping_color(pdelta_ms),
             save='ping-text',
             align=(2, 0)
         )
