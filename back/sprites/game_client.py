@@ -104,7 +104,7 @@ class Game:
                     self.paused = not self.paused
                 # close socket
                 elif msg == 'close':
-                    self.connected['connected'] = Falsejhmbjmjm
+                    self.connected['connected'] = False
                 # update status
                 elif msg.startswith('time'):
                     self.time = msg[4:]
@@ -182,6 +182,7 @@ class Game:
         # Show ping
         pdelta_ms = self.pingdelta/1e6
         rmaxping_ms = self.recent_max_ping()/1e6
+        ping_color = self.__class__.get_ping_color(pdelta_ms)
         ui.show_text(
             (self.args.size[0] - 10, 10),
             "|{: >{:d}s} ".format(
@@ -189,8 +190,8 @@ class Game:
                 round(math.log(rmaxping_ms+1, 2))
             ) + f"Latency{round(pdelta_ms):6d} ms",
             font=f.get_font('courier-prime', 20),
-            color=self.__class__.get_ping_color(pdelta_ms),
-            save='ping-text',
+            color=ping_color,
+            save='ping-text-' + str(ping_color),
             align=(2, 0)
         )
 
