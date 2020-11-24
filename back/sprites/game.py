@@ -74,8 +74,8 @@ class Game:
             for switch in self.map.objects['switch']:
                 if player.will_collide_with(switch):
                     switch.trigger(self.map, self.players)
-                else:
-                    switch.auto(self.map, self.players)
+        for switch in self.map.objects['switch']:
+            switch.auto(self.map, self.players)
         # move elevators
         for elevator in self.map.objects['elevator']:
             elevator.move()

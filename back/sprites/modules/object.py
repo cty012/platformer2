@@ -80,6 +80,7 @@ class Switch(Object):
         # command
         self.command = info['command']
         self.state = 'close'
+        self.triggered = False
         # move
         self.speed = [0, 0]
         # update
@@ -88,12 +89,16 @@ class Switch(Object):
             self.update = info['update']
 
     def auto(self, map, players):
+        if self.triggered:
+            self.triggered = False
+            return
         if 'auto' not in self.command.keys():
             return
         for command in self.command['auto']:
             self.execute(map, players, command)
 
     def trigger(self, map, players):
+        self.triggered = True
         for command in self.command[self.state]:
             self.execute(map, players, command)
 
