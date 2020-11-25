@@ -1,5 +1,8 @@
+import pickle
+
 import back.sprites.component as c
 import utils.fonts as f
+import utils.score_reader as sr
 
 
 class Scene:
@@ -27,6 +30,7 @@ class Scene:
                 font=f.tnr(25), align=(1, 1), background=(210, 210, 210)
             ),
         }
+        self.scores = sr.ScoreReader.load(args.save_path)
 
     def process_events(self, events):
         if events['mouse-left'] == 'down':
@@ -53,4 +57,13 @@ class Scene:
         self.background.show(ui)
         ui.show_text((self.args.size[0] // 2, 100), "Select A Level", font=f.cambria(60), align=(1, 1))
         for name in self.buttons:
-            self.buttons[name].show(ui)
+            button = self.buttons[name]
+            button.show(ui)
+            if name not in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']:
+                continue
+            b_pos = button.pos[0] + button.size[0] // 2, button.pos[1] + button.size[1] // 2
+            x, y = 35, 50
+            pos_list = [[b_pos[0] - x, b_pos[1] + y], [b_pos[0], b_pos[1] + y], [b_pos[0] + x, b_pos[1] + y]]
+            for i, pos in enumerate(pos_list):
+                ui.show_div(pos, (24, 24), color=(255, 215, 0) if self.scores[name] > i else (255, 255, 255), align=(1, 1))
+                ui.show_div(pos, (24, 24), border=2, align=(1, 1))

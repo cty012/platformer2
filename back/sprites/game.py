@@ -15,6 +15,7 @@ class Game:
         self.mode = mode
         self.level_info = level_info
         self.name = ''
+        self.running = True
         self.win = None
         self.score = 0
         # modules

@@ -4,6 +4,7 @@ import os
 import back.sprites.component as c
 import back.sprites.menu.game_menu as gm
 import back.sprites.menu.score_board as sb
+import utils.score_reader as sr
 
 
 class Scene:
@@ -26,6 +27,11 @@ class Scene:
     def process_events(self, events):
         # game ended
         if self.game.win is not None:
+            # detect if game ended just now
+            if self.game.running:
+                if self.game.win:
+                    sr.ScoreReader.update_score(self.args.save_path, self.mode['level'], self.game.score)
+                self.game.running = False
             # stop timer if game ends
             if not self.is_client() and self.game.clock.stopwatch.is_running():
                 self.game.clock.stopwatch.stop()

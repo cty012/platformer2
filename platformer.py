@@ -29,7 +29,7 @@ else:
 
 
 # Create args
-args = a.Args(scale=1, path=path)
+args = a.Args(scale=1, path=path, save_path=save_path)
 
 
 # Load settings
