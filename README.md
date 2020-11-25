@@ -12,9 +12,6 @@ Fork, [Fire an issue](https://github.com/cty012/platformer2/issues), Make a pull
 
 ## Todos
 
-- [ ] Unfinished levels
-  - [ ] Level 6
-  - [ ] Level 10
 - [ ] Build into apps/executables
   - [ ] Windows
   - [ ] Mac
