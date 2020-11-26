@@ -57,6 +57,10 @@ class Scene:
                     self.game.clock.stopwatch.stop()
                 else:
                     self.game.clock.stopwatch.start()
+            # send info
+            if self.is_server():
+                self.game.send('info' + json.dumps({
+                    'score': self.game.score, 'time': self.game.clock.stopwatch.get_str_time()}))
         elif name == 'quit':
             if self.is_server():
                 self.game.close_client_sockets()
