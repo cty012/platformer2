@@ -37,3 +37,10 @@ def is_private_ip(ip):
     if not is_ip(ip):
         return False
     return ip.startswith('10.') or ip.startswith('192.168.') or re.match(r'^172\.((1[6-9])|(2[0-9])|(3[0-1]))\.', ip)
+
+
+def to_str_time(hundredth_secs, *, connect=(':', ':')):
+    minutes = hundredth_secs // 6000
+    seconds = (hundredth_secs % 6000) // 100
+    decimals = hundredth_secs % 100
+    return f'{minutes:02}{connect[0]}{seconds:02}{connect[1]}{decimals:02}'

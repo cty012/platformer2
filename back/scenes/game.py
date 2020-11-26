@@ -30,11 +30,10 @@ class Scene:
             # detect if game ended just now
             if self.game.running:
                 if self.game.win:
-                    sr.ScoreReader.update_score(self.args.save_path, self.mode['level'], self.game.score)
+                    sr.ScoreReader.update_score(
+                        self.args.save_path, self.mode['level'], self.game.score,
+                        self.game.clock.stopwatch.get_str_time())
                 self.game.running = False
-            # stop timer if game ends
-            if not self.is_client() and self.game.clock.stopwatch.is_running():
-                self.game.clock.stopwatch.stop()
             return self.execute(self.score_board.process_events(events))
         # game paused
         elif self.game_menu.active:

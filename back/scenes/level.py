@@ -1,8 +1,7 @@
-import pickle
-
 import back.sprites.component as c
 import utils.fonts as f
 import utils.score_reader as sr
+import utils.functions as utils
 
 
 class Scene:
@@ -61,9 +60,20 @@ class Scene:
             button.show(ui)
             if name not in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']:
                 continue
+            if self.scores[name][0] < 0:
+                continue
             b_pos = button.pos[0] + button.size[0] // 2, button.pos[1] + button.size[1] // 2
+            # show score
             x, y = 35, 50
             pos_list = [[b_pos[0] - x, b_pos[1] + y], [b_pos[0], b_pos[1] + y], [b_pos[0] + x, b_pos[1] + y]]
             for i, pos in enumerate(pos_list):
-                ui.show_div(pos, (24, 24), color=(255, 215, 0) if self.scores[name] > i else (255, 255, 255), align=(1, 1))
+                ui.show_div(pos, (24, 24), color=(255, 215, 0) if self.scores[name][0] > i else (255, 255, 255), align=(1, 1))
                 ui.show_div(pos, (24, 24), border=2, align=(1, 1))
+            # show time
+            if self.scores[name][1] is None:
+                continue
+            ui.show_div((b_pos[0] + 23, b_pos[1] - 50), (80, 26), color=(255, 255, 255), align=(1, 1))
+            ui.show_div((b_pos[0] + 23, b_pos[1] - 50), (80, 26), border=2, align=(1, 1))
+            time = utils.to_str_time(self.scores[name][1]).split(':')
+            ui.show_text((b_pos[0] + 38, b_pos[1] - 40), f'{time[0]}:{time[1]}', f.get_font('04b_03b', 18), align=(2, 2))
+            ui.show_text((b_pos[0] + 41, b_pos[1] - 41), f'{time[2]}', f.get_font('04b_03b', 14), align=(0, 2))

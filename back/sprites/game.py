@@ -96,8 +96,12 @@ class Game:
             self.send(json.dumps(self.get_status()))
             self.send('time' + self.clock.stopwatch.get_str_time())
         if self.win is not None:
-            self.close_client_sockets()
-            self.connected['connected'] = False
+            self.clock.stopwatch.stop()
+            if self.mode['mode'] == 'mult':
+                info = {'win': self.win, 'score': self.score, 'time': self.clock.stopwatch.get_str_time()}
+                self.send('end' + json.dumps(info))
+                self.close_client_sockets()
+                self.connected['connected'] = False
 
     def send(self, msg):
         try:
@@ -190,7 +194,6 @@ class Game:
 ########################################################################################################################
     def get_status(self):
         return {
-            'win': self.win,
             'score': self.score,
             'map': self.map.get_status(),
             'players': [player.get_status() for player in self.players],

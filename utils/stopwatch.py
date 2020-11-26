@@ -1,5 +1,7 @@
 import time
 
+import utils.functions as utils
+
 
 class Stopwatch:
     def __init__(self, start_time=0):
@@ -44,11 +46,7 @@ class Stopwatch:
 
     def get_str_time(self):
         """MINUTE:SECOND:1/100SECOND"""
-        time_in_seconds = self.get_time()
-        minutes = int(time_in_seconds) // 60
-        seconds = int(time_in_seconds) - minutes * 60
-        decimals = int((time_in_seconds - int(time_in_seconds)) * 100)
-        return f'{minutes:02}:{seconds:02}:{decimals:02}'
+        return utils.to_str_time(int(self.get_time() * 100))
 
     def clear(self):
         self.start_time = None

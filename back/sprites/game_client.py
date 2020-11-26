@@ -105,10 +105,17 @@ class Game:
                     self.paused = not self.paused
                 # close socket
                 elif msg == 'close':
-                    self.connected['connected'] = False
+                    pass
+                    # self.connected['connected'] = False
                 # update status
                 elif msg.startswith('time'):
                     self.time = msg[4:]
+                elif msg.startswith('info'):
+                    info = json.loads(msg[4:])
+                    self.score, self.time = info['score'], info['time']
+                elif msg.startswith('end'):
+                    info = msg[3:]
+                    self.win, self.score, self.time = info['win'], info['score'], info['time']
                 else:
                     status = json.loads(msg)
                     self.set_status(status)
@@ -146,13 +153,11 @@ class Game:
 # DISPLAY #
 ########################################################################################################################
     def set_status(self, status):
-        self.win = status['win']
         self.score = status['score']
         self.map.set_status(status['map'])
         for i in range(len(self.players)):
             self.players[i].set_status(status['players'][i])
         if self.win is not None:
-            print()
             self.connected['connected'] = False
 
         self.svr_pingstamp = status['pings'][self.mode['connect']['id']]
