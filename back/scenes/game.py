@@ -32,7 +32,7 @@ class Scene:
                 if self.game.win:
                     sr.ScoreReader.update_score(
                         self.args.save_path, self.mode['level'], self.game.score,
-                        self.game.clock.stopwatch.get_str_time() if self.is_server() else self.game.time
+                        self.game.time if self.is_client() else self.game.clock.stopwatch.get_str_time()
                     )
                 self.game.running = False
             return self.execute(self.score_board.process_events(events))
