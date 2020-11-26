@@ -114,7 +114,7 @@ class Game:
                     info = json.loads(msg[4:])
                     self.score, self.time = info['score'], info['time']
                 elif msg.startswith('end'):
-                    info = msg[3:]
+                    info = json.loads(msg[3:])
                     self.win, self.score, self.time = info['win'], info['score'], info['time']
                 else:
                     status = json.loads(msg)
